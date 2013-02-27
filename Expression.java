@@ -43,7 +43,7 @@ public class Expression implements Constantes {
 	
 	public boolean operation()
 	{
-		int ope = operateur.peek();
+		int ope = operateur.pop();
 		if (ope==NEG)
 		{
 			return true;
