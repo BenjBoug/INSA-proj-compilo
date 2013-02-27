@@ -1,0 +1,322 @@
+/*
+ *
+ *       Auteur: Pedrono Marie-Jo
+ *
+ * 	creation : 13 fevrier 2002
+ *
+ *     nature : projet etudiant
+ *
+ */
+
+
+options{
+	JDK_VERSION="1.5";	
+}
+
+PARSER_BEGIN(Yaka)
+
+
+
+public class Yaka implements Constantes {
+
+    public static Declaration decl;
+    public static TabIdent tabIdent;
+    public static Expression expr;
+    public static YVM yvm;
+    public static int cmptVar=0;
+
+  public static void main(String args[]) { 
+    Yaka analyseur;
+    java.io.InputStream input;
+
+    if (args.length==1) {
+      System.out.print(args[args.length-1] + ": ");
+      try {
+        input = new java.io.FileInputStream(args[args.length-1]+".yaka");
+      } catch (java.io.FileNotFoundException e) {
+        System.out.println("Fichier introuvable.");
+        return;
+      }
+    } else if (args.length==0) {
+      System.out.println("Lecture sur l'entree standard...");
+      input = System.in;
+    } else {
+      System.out.println("Usage: java Gram [fichier]");
+      return;
+    }
+    try {
+      tabIdent = new TabIdent();
+      decl = new Declaration(tabIdent);
+      expr = new Expression(tabIdent);
+      analyseur = new Yaka(input);
+      yvm = new YVM("test");
+      analyseur.analyse();
+      System.out.println("analyse syntaxique reussie!");
+    } catch (ParseException e) {
+      String msg = e.getMessage();
+      msg = msg.substring(0,msg.indexOf("\n"));
+      System.out.println("Erreur de syntaxe : "+msg);
+    }
+  } 
+}
+
+PARSER_END(Yaka)
+/***************************************/
+/********** TOKEN DEFINITIONS **********/
+/***************************************/
+
+TOKEN_MGR_DECLS :
+{public static String identLu,chaineLue;
+ public static int entierLu,opLu;}
+
+/*** Skip whitespace and comments ***/
+SKIP :
+{
+  " "
+| "\t"
+| "\n"
+| "\r"
+| "(*"   : IN_COMMENT
+}
+<IN_COMMENT> MORE:
+{
+  < ~[] >
+}
+<IN_COMMENT> SKIP:
+{
+   < "*)" >  {SwitchTo(DEFAULT);} 
+}
+
+
+/* Mots reserves*/
+
+TOKEN :
+{
+  < BOOLEEN: "BOOLEEN" >
+| < VAR: "VAR" >
+| < FAIRE: "FAIRE" >
+| < SINON: "SINON" >
+| < POUR: "POUR" >
+| < SI: "SI" >
+| < FSI: "FSI">
+| < ENT: "ENTIER" >
+| < RETOURNE: "RETOURNE" >
+| < TRUE: "VRAI" >
+| < TANTQUE: "TANTQUE" >
+| <CONST : "CONST">
+| <FALSE : "FAUX">
+| <FAIT : "FAIT">
+| <OR : "OU">
+| <AND : "ET">
+| <NON : "NON">
+| <FONCTION : "FONCTION">
+| <FFONCTION  : "FFONCTION">
+| <PROGRAMME : "PROGRAMME" >
+| <FPROGRAMME: "FPROGRAMME" >
+| <PRINCIPAL : "PRINCIPAL">
+| <FPRINCIPAL : "FPRINCIPAL">
+| <ALORS : "ALORS">
+| <ECRIRE : "ECRIRE">
+| <LIRE : "LIRE">
+| <ALALIGNE : "ALALIGNE">
+
+}
+
+
+
+/*** unites de base nombres, idents,  strings ***/
+TOKEN  :
+{
+  < #chiffre : ["0"-"9"] >
+| < entier : (<chiffre>)+ > 
+	{ entierLu = Integer.parseInt(image.toString());
+        }
+| < #lettre: ["A"-"Z","a"-"z"] >
+| < ident : <lettre> (<lettre> | <chiffre>)* >
+	{identLu =image.toString();	
+	}
+| < chaine : "\"" (~["\""])* "\"" | "'" (~["'"])* "'" >
+	{ chaineLue = image.toString();
+	 }
+}
+
+
+/**************************************/
+/********debut de la grammaire ********/
+/**************************************/
+void analyse() : {}
+{
+   <PROGRAMME> {yvm.entete();} <ident>	
+   bloc()
+   <FPROGRAMME> 
+}
+
+void bloc() : {}{
+ (declConst())*
+ (declVar())* {yvm.ouvrePrinc(cmptVar);}		
+   suiteExpr() 
+}
+
+void declConst() : {}
+{
+  <CONST>  defConst() ( "," defConst())* ";"
+}
+
+void defConst() : {}
+{
+	
+  <ident> 	  	
+   "=" valConst()
+    
+}
+
+void valConst() : {String id = YakaTokenManager.identLu;}
+{
+  <entier> {
+  decl.ajoutConstEntier(id,YakaTokenManager.entierLu); 
+  yvm.iconst(YakaTokenManager.entierLu);
+  } 		
+ | <ident> {
+ decl.ajoutConstIdent(id,YakaTokenManager.identLu);
+ yvm.iconst(tabIdent.chercheIdent(id).getValeur());
+ } 		
+ | <TRUE> {
+ decl.ajoutConstBool(id,VRAI);
+ yvm.iconst(VRAI);
+ }		
+ | <FALSE> {
+ decl.ajoutConstBool(id,FAUX);
+ yvm.iconst(FAUX);
+ }		
+}
+
+
+void declVar() : {}
+{
+  <VAR> type()	
+  <ident>	{
+  decl.ajoutVariable(YakaTokenManager.identLu);
+  cmptVar++;
+  }	
+  ("," 
+      <ident> {
+      decl.ajoutVariable(YakaTokenManager.identLu);
+      cmptVar++;
+      }	 
+  )* ";"
+}
+
+void type() :{}
+{
+   <ENT> 	{decl.definirTypeVar(ENTIER);}		
+ | <BOOLEEN>	{decl.definirTypeVar(BOOLEAN);}	
+}
+/*
+ * Syntaxe des instructions.
+ */
+void suiteExpr() : {}
+{ (expression() (";" (expression())? )*)? }
+
+
+
+/*
+ * Expression .
+ */
+void expression() : {}
+{
+  simpleExpr() 
+  (opRel() 
+  simpleExpr() {expr.operation();}
+  )?
+}
+
+void simpleExpr() : {}
+{
+   terme() 
+   (opAdd() 
+   terme()	{// iadd et tout
+   yvm.operation(YakaTokenManager.opLu);
+   expr.operation();}
+   )*
+} 
+void terme() : {}
+{
+  facteur() 
+  (opMul() 
+  facteur()	{// imul et tout
+  expr.operation();}
+  )*
+}
+void facteur() : {}
+{   primaire() 
+  |  opNeg() primaire() 
+}
+
+void primaire (): {}
+{
+   valeur()
+ | "(" expression() ")" 
+ 
+}
+
+void valeur () : {}
+{ <entier> {
+  expr.empilerEnt(YakaTokenManager.entierLu); 
+  yvm.iconst(YakaTokenManager.entierLu);
+  } 		
+ | <ident> {
+ expr.empilerIdent(YakaTokenManager.identLu);
+ yvm.iconst(tabIdent.chercheIdent(YakaTokenManager.identLu).getValeur());
+ } 		
+ | <TRUE> {
+ expr.empilerBool(VRAI);
+ yvm.iconst(VRAI);
+ }		
+ | <FALSE> {
+ expr.empilerBool(FAUX);
+ yvm.iconst(FAUX);
+ }	
+}
+
+void opRel() : {}
+{
+   "=" 	{expr.empilerOperation(EGAL);
+   		opLu = EGAL;}	
+ | "<>" {expr.empilerOperation(NEGAL);
+ 		opLu = NEGAL;}		
+ | "<" 	{expr.empilerOperation(INF);
+ 		opLu = INF;}		
+ | "<=" {expr.empilerOperation(INFEG);
+ 		opLu = INFEG;}		
+ | ">" 	{expr.empilerOperation(SUP);
+ 		opLu = SUP;}		
+ | ">=" {expr.empilerOperation(SUPEG);
+ 		opLu = SUPEG;}		
+} 
+
+void opAdd() : {}
+{
+    "+"	{expr.empilerOperation(PLUS);
+    	opLu = PLUS;}		
+  |  "-"  {expr.empilerOperation(MOINS);
+  		opLu = MOINS;}	
+  | <OR> 	{expr.empilerOperation(OU);
+  		opLu = OU;}	
+}
+
+void opMul() : {}
+{
+  "*"	{expr.empilerOperation(MUL);
+  		opLu = MUL;}		
+  | "/"		{expr.empilerOperation(DIV);
+  		opLu = DIV;}	
+  | <AND>	{expr.empilerOperation(ET);
+  		opLu = ET;}	
+} 
+
+void opNeg() : {}
+{ "-"	
+ | <NON>    {opLu = NEG;}  	
+}
+
+
