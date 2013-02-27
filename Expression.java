@@ -49,7 +49,6 @@ public class Expression implements Constantes {
 	
 	public boolean operation()
 	{
-
 		int ope = operateur.pop();
 		if (ope==NEG)
 		{

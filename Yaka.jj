@@ -227,10 +227,11 @@ void affectation() : {}
 {	 <ident> "=" expression()}
 
 void lecture() : {}{	<LIRE> "(" <ident> ")"
+	{	  yvm.lireEnt(tabIdent.chercheIdent(YakaTokenManager.identLu).getValeur());
+	}
 }
 void ecriture()  : {}
-{	<ECRIRE> "(" (expression() | <chaine>) ")" | < ALALIGNE >
-
+{	<ECRIRE> "(" (expression() | <chaine>) ")" | <ALALIGNE>
 }
 
 /*
