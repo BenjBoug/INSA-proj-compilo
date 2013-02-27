@@ -229,13 +229,9 @@ void affectation() : {}
 void lecture() : {}{	<LIRE> "(" <ident> ")"
 }
 void ecriture()  : {}
-{	<ECRIRE> "(" (expression() | chaine())")" | < ALALIGNE >
-
+{	<ECRIRE> "(" (expression() | <chaine>) ")" | <ALALIGNE>
 }
 
-void chaine()  : {}
-{	
-}
 
 /*
  * Expression .
