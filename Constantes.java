@@ -16,6 +16,7 @@ public interface Constantes {
 					 ET=13,
 					 OU=14,
 					 VRAI=-1,
-					 FAUX=0;
+					 FAUX=0,
+					 NEG=15;
 
 }

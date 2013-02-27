@@ -154,7 +154,7 @@ void analyse() : {}
 void bloc() : {}{
  (declConst())*
  (declVar())* {yvm.ouvrePrinc(cmptVar);}		
-   suiteExpr() 
+   suiteInstr() 
 }
 
 void declConst() : {}
@@ -214,10 +214,28 @@ void type() :{}
 /*
  * Syntaxe des instructions.
  */
-void suiteExpr() : {}
-{ (expression() (";" (expression())? )*)? }
+void suiteInstr() : {}
+{
+	instruction()	(";"	  
+	  (instruction())?	)*
+}
 
+void instruction() : {}{
+	affectation() | lecture() | ecriture()}
 
+void affectation() : {}
+{	 <ident> "=" expression()}
+
+void lecture() : {}{	<LIRE> "(" <ident> ")"
+}
+void ecriture()  : {}
+{	<ECRIRE> "(" (expression() | chaine())")" | < ALALIGNE >
+
+}
+
+void chaine()  : {}
+{	
+}
 
 /*
  * Expression .
@@ -316,7 +334,8 @@ void opMul() : {}
 
 void opNeg() : {}
 { "-"	
- | <NON>    {opLu = NEG;}  	
+ | <NON>    {expr.empilerOperation(NEG);
+    opLu = NEG;}  	
 }
 
 
