@@ -41,19 +41,27 @@ public class Expression implements Constantes {
 		return types.peek();
 	}
 	
+	public int getSommetOp()
+	{
+		return operateur.peek();
+	}
+	
+	
 	public boolean operation()
 	{
 		int type1 = types.pop();
 		int type2 = types.pop();
-		int ope = operateur.peek();
+		int ope = operateur.pop();
 		if (type1==type2)
 		{
 			switch (ope)
 			{
 				case PLUS:
+					System.out.println("plus");
 				case MOINS:
 				case MUL:
 				case DIV:
+					System.out.println("div");
 					if (tabOpe[0][type1]==ERROR)
 						System.out.println("Erreur: l'expression n'est pas correct.");
 					types.push(tabOpe[0][type1]);

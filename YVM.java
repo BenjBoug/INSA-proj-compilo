@@ -2,7 +2,7 @@
 
 import java.io.OutputStream;
 
-public class YVM {
+public class YVM implements Constantes {
 	protected OutputStream o;
 
 	public YVM(String nomFich) {
@@ -121,4 +121,48 @@ public class YVM {
 		Ecriture.ecrireStringln(o, "aLaLigne");
 	}
 
+	public void operation(int op) {
+		System.out.println(op);
+		switch (op)
+		{
+			case PLUS:
+				iadd();
+				break;
+			case MOINS:
+				isub();
+				break;
+			case MUL:
+				imul();
+				break;
+			case DIV:
+				idiv();
+				break;
+			case INF:
+				iinf();
+				break;
+			case SUP:
+				isup();
+			case INFEG:
+				iinfegal();
+				break;
+			case SUPEG:
+				isupegal();
+				break;
+			case EGAL:
+				iegal();
+				break;
+			case NEGAL:
+				idiff();
+				break;
+			case ET:
+				iand();
+				break;
+			case OU:
+				ior();
+				break;
+			case NEG:
+				ineg();
+				break;
+		}
+	}
 }
