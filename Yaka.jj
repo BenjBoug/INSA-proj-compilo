@@ -229,12 +229,8 @@ void affectation() : {}
 void lecture() : {}{	<LIRE> "(" <ident> ")"
 }
 void ecriture()  : {}
-{	<ECRIRE> "(" (expression() | chaine())")" | < ALALIGNE >
+{	<ECRIRE> "(" (expression() | <chaine>) ")" | < ALALIGNE >
 
-}
-
-void chaine()  : {}
-{	
 }
 
 /*
@@ -304,15 +300,15 @@ void opRel() : {}
    "=" 	{expr.empilerOperation(EGAL);}	
  | "<>" {expr.empilerOperation(NEGAL);}		
  | "<" 	{expr.empilerOperation(INF);}		
- | "<=" {expr.empilerOperation(INFEG);}		
+ | "<=" {expr.empilerOperation(INFEG);
+ 		System.out.println("Empile <=");}		
  | ">" 	{expr.empilerOperation(SUP);}		
  | ">=" {expr.empilerOperation(SUPEG);}		
 } 
 
 void opAdd() : {}
 {
-    "+"	{expr.empilerOperation(PLUS);
-    	System.out.println("Empile plus");}		
+    "+"	{expr.empilerOperation(PLUS);}		
   |  "-"  {expr.empilerOperation(MOINS);}	
   | <OR> 	{expr.empilerOperation(OU);}	
 }
