@@ -252,17 +252,20 @@ void simpleExpr() : {}
 {
    terme() 
    (opAdd() 
-   terme()	{// iadd et tout
-   yvm.operation(YakaTokenManager.opLu);
-   expr.operation();}
+   terme()	{
+   yvm.operation(expr.getSommetOp());
+   expr.operation();
+   }
    )*
 } 
 void terme() : {}
 {
   facteur() 
   (opMul() 
-  facteur()	{// imul et tout
-  expr.operation();}
+  facteur()	{
+	yvm.operation(expr.getSommetOp());
+  expr.operation();
+    }
   )*
 }
 void facteur() : {}
@@ -298,44 +301,34 @@ void valeur () : {}
 
 void opRel() : {}
 {
-   "=" 	{expr.empilerOperation(EGAL);
-   		opLu = EGAL;}	
- | "<>" {expr.empilerOperation(NEGAL);
- 		opLu = NEGAL;}		
- | "<" 	{expr.empilerOperation(INF);
- 		opLu = INF;}		
- | "<=" {expr.empilerOperation(INFEG);
- 		opLu = INFEG;}		
- | ">" 	{expr.empilerOperation(SUP);
- 		opLu = SUP;}		
- | ">=" {expr.empilerOperation(SUPEG);
- 		opLu = SUPEG;}		
+   "=" 	{expr.empilerOperation(EGAL);}	
+ | "<>" {expr.empilerOperation(NEGAL);}		
+ | "<" 	{expr.empilerOperation(INF);}		
+ | "<=" {expr.empilerOperation(INFEG);}		
+ | ">" 	{expr.empilerOperation(SUP);}		
+ | ">=" {expr.empilerOperation(SUPEG);}		
 } 
 
 void opAdd() : {}
 {
     "+"	{expr.empilerOperation(PLUS);
-    	opLu = PLUS;}		
-  |  "-"  {expr.empilerOperation(MOINS);
-  		opLu = MOINS;}	
-  | <OR> 	{expr.empilerOperation(OU);
-  		opLu = OU;}	
+    	System.out.println("Empile plus");}		
+  |  "-"  {expr.empilerOperation(MOINS);}	
+  | <OR> 	{expr.empilerOperation(OU);}	
 }
 
 void opMul() : {}
 {
-  "*"	{expr.empilerOperation(MUL);
-  		opLu = MUL;}		
-  | "/"		{expr.empilerOperation(DIV);
-  		opLu = DIV;}	
-  | <AND>	{expr.empilerOperation(ET);
-  		opLu = ET;}	
+  "*"	{expr.empilerOperation(MUL);}		
+  | "/"		{expr.empilerOperation(DIV);}	
+  | <AND>	{expr.empilerOperation(ET);}	
 } 
 
 void opNeg() : {}
 { "-"	
- | <NON>    {expr.empilerOperation(NEG);
-    opLu = NEG;}  	
+ | <NON>
+ {expr.empilerOperation(NEG);}	
+
 }
 
 

@@ -41,6 +41,12 @@ public class Expression implements Constantes {
 		return types.peek();
 	}
 	
+	public int getSommetOp()
+	{
+		return operateur.peek();
+	}
+	
+	
 	public boolean operation()
 	{
 		int ope = operateur.pop();
