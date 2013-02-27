@@ -49,53 +49,60 @@ public class Expression implements Constantes {
 	
 	public boolean operation()
 	{
-		int type1 = types.pop();
-		int type2 = types.pop();
+
 		int ope = operateur.pop();
-		if (type1==type2)
+		if (ope==NEG)
 		{
-			switch (ope)
-			{
-				case PLUS:
-					System.out.println("plus");
-				case MOINS:
-				case MUL:
-				case DIV:
-					System.out.println("div");
-					if (tabOpe[0][type1]==ERROR)
-						System.out.println("Erreur: l'expression n'est pas correct.");
-					types.push(tabOpe[0][type1]);
-					break;
-					
-				case INF:
-				case SUP:
-				case INFEG:
-				case SUPEG:
-					if (tabOpe[1][type1]==ERROR)
-						System.out.println("Erreur: l'expression n'est pas correct.");
-					types.push(tabOpe[1][type1]);
-					break;
-	
-				case EGAL:
-				case NEGAL:
-					if (tabOpe[2][type1]==ERROR)
-						System.out.println("Erreur: l'expression n'est pas correct.");
-					types.push(tabOpe[2][type1]);				
-					break;
-					
-				case ET:
-				case OU:
-					if (tabOpe[3][type1]==ERROR)
-						System.out.println("Erreur: l'expression n'est pas correct.");
-					types.push(tabOpe[3][type1]);
-					break;
-			}
 			return true;
 		}
 		else
 		{
-			types.push(ERROR);
-			return false;
+			int type1 = types.pop();
+			int type2 = types.pop();
+			if (type1==type2)
+			{
+				switch (ope)
+				{
+					case PLUS:
+					case MOINS:
+					case MUL:
+					case DIV:
+						if (tabOpe[0][type1]==ERROR)
+							System.out.println("Erreur: l'expression n'est pas correct.");
+						types.push(tabOpe[0][type1]);
+						break;
+						
+					case INF:
+					case SUP:
+					case INFEG:
+					case SUPEG:
+						if (tabOpe[1][type1]==ERROR)
+							System.out.println("Erreur: l'expression n'est pas correct.");
+						types.push(tabOpe[1][type1]);
+						break;
+		
+					case EGAL:
+					case NEGAL:
+						if (tabOpe[2][type1]==ERROR)
+							System.out.println("Erreur: l'expression n'est pas correct.");
+						types.push(tabOpe[2][type1]);				
+						break;
+						
+					case ET:
+					case OU:
+						if (tabOpe[3][type1]==ERROR)
+							System.out.println("Erreur: l'expression n'est pas correct.");
+						types.push(tabOpe[3][type1]);
+						
+						break;
+				}
+				return true;
+			}
+			else
+			{
+				types.push(ERROR);
+				return false;
+			}
 		}
 	}
 	
