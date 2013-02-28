@@ -5,7 +5,7 @@ public class Yaka implements Constantes, YakaConstants {
     public static TabIdent tabIdent;
     public static Expression expr;
     public static YVM yvm;
-    public static int offsetVarTemp=0;
+    public static String nomVarTemp="";
 
   public static void main(String args[]) {
     Yaka analyseur;
@@ -227,11 +227,11 @@ public class Yaka implements Constantes, YakaConstants {
 
   static final public void affectation() throws ParseException {
     jj_consume_token(ident);
-           offsetVarTemp = tabIdent.valeurIdent(YakaTokenManager.identLu);
+           nomVarTemp = YakaTokenManager.identLu;
     jj_consume_token(42);
     expression();
-          yvm.istore(offsetVarTemp);
-         expr.controleAffectation(ident);
+          yvm.istore(tabIdent.valeurIdent(nomVarTemp));
+         expr.controleAffectation(nomVarTemp);
   }
 
   static final public void lecture() throws ParseException {

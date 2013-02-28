@@ -23,7 +23,7 @@ public class Yaka implements Constantes {
     public static TabIdent tabIdent;
     public static Expression expr;
     public static YVM yvm;
-    public static int offsetVarTemp=0;
+    public static String nomVarTemp="";
 
   public static void main(String args[]) { 
     Yaka analyseur;
@@ -224,9 +224,9 @@ void instruction() : {}{
 	affectation() | lecture() | ecriture()}
 
 void affectation() : {}
-{	 <ident>	 { offsetVarTemp = tabIdent.valeurIdent(YakaTokenManager.identLu);}	   "=" expression()
-	 {yvm.istore(offsetVarTemp);
-	 expr.controleAffectation(ident);}}
+{	 <ident>	 { nomVarTemp = YakaTokenManager.identLu;}	   "=" expression()
+	 {yvm.istore(tabIdent.valeurIdent(nomVarTemp));
+	 expr.controleAffectation(nomVarTemp);}}
 
 
 void lecture() : {}{	<LIRE> "(" <ident> ")"
