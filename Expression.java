@@ -118,6 +118,7 @@ public class Expression implements Constantes {
 			}
 			else
 			{
+				System.out.println("Erreur: l'expression n'est pas correct.");
 				types.push(ERROR);
 				return false;
 			}

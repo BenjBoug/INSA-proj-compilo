@@ -22,8 +22,8 @@ public class Yaka implements Constantes {
     public static Declaration decl;
     public static TabIdent tabIdent;
     public static Expression expr;
-    public static YVM yvm;
-    public static int offsetVarTemp=0;
+    public static YVMasm yvm;
+    public static String nomVarTemp="";
 
   public static void main(String args[]) { 
     Yaka analyseur;
@@ -49,7 +49,7 @@ public class Yaka implements Constantes {
       decl = new Declaration(tabIdent);
       expr = new Expression(tabIdent);
       analyseur = new Yaka(input);
-      yvm = new YVM("test");
+      yvm = new YVMasm("test");
       analyseur.analyse();
       System.out.println("analyse syntaxique reussie!");
     } catch (ParseException e) {
@@ -221,18 +221,14 @@ void suiteInstr() : {}
 }
 
 void instruction() : {}{
-	affectation() | lecture() | ecriture() | boucle()}
+	affectation() | lecture() | ecriture() | boucle() | condition()}
 /*
  *affectation
  */
 void affectation() : {}
-{	 <ident> {String ident=YakaTokenManager.identLu;} "=" expression()
-	 {expr.controleAffectation(ident);}}
-
-void affectation() : {}
-{	 <ident>	 { offsetVarTemp = tabIdent.valeurIdent(YakaTokenManager.identLu);}	   "=" expression()
-	 {yvm.istore(offsetVarTemp);
-	 expr.controleAffectation(ident);}}
+{	 <ident>	 { nomVarTemp = YakaTokenManager.identLu;}	   "=" expression()
+	 {yvm.istore(tabIdent.valeurIdent(nomVarTemp));
+	 expr.controleAffectation(nomVarTemp);}}
 
 void lecture() : {}{	<LIRE> "(" <ident> ")"
 	{	  yvm.lireEnt(tabIdent.valeurIdent(YakaTokenManager.identLu));
@@ -248,11 +244,28 @@ void ecriture()  : {}
  */
 
 void boucle() : {}{	< TANTQUE > expression() < FAIRE >  suiteBoucle()
-{}
+}
 void suiteBoucle() : {}
 {
-	suiteInstr() < FAIT >";"
-}  
+	suiteInstr() < FAIT >
+}
+
+/*
+ * conditionnelle
+ */
+
+void condition() : {}
+{
+	< SI > expression() < ALORS > suiteInstr() suiteCondi()}
+void suiteCondi() : {}
+{
+	< FSI > | sinonCondi()
+}
+void sinonCondi() : {}
+{
+	< SINON > suiteInstr() < FSI >
+}
+
 
 /*
  * Expression .
