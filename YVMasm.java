@@ -181,7 +181,7 @@ public class YVMasm extends YVM {
 	public void iconst(int valeur) {
 		Ecriture.ecrireString(o,"; ");
 		super.iconst(valeur);
-		Ecriture.ecrireStringln(o,"push word ptr"+valeur);
+		Ecriture.ecrireStringln(o,"push word ptr "+valeur);
 	}
 
 	public void ifeq(String etiquette) {
