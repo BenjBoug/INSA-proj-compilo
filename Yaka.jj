@@ -224,7 +224,8 @@ void instruction() : {}{
 	affectation() | lecture() | ecriture()}
 
 void affectation() : {}
-{	 <ident> "=" expression()}
+{	 <ident> {String ident=YakaTokenManager.identLu;} "=" expression()
+	 {expr.controleAffectation(ident);}}
 
 void lecture() : {}{	<LIRE> "(" <ident> ")"
 	{	  yvm.lireEnt(tabIdent.chercheIdent(YakaTokenManager.identLu).getValeur());
@@ -301,8 +302,7 @@ void opRel() : {}
    "=" 	{expr.empilerOperation(EGAL);}	
  | "<>" {expr.empilerOperation(NEGAL);}		
  | "<" 	{expr.empilerOperation(INF);}		
- | "<=" {expr.empilerOperation(INFEG);
- 		System.out.println("Empile <=");}		
+ | "<=" {expr.empilerOperation(INFEG);}		
  | ">" 	{expr.empilerOperation(SUP);}		
  | ">=" {expr.empilerOperation(SUPEG);}		
 } 

@@ -122,7 +122,6 @@ public class YVM implements Constantes {
 	}
 
 	public void operation(int op) {
-		System.out.println(op);
 		switch (op)
 		{
 			case PLUS:

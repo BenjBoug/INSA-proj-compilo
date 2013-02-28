@@ -228,8 +228,10 @@ public class Yaka implements Constantes, YakaConstants {
 
   static final public void affectation() throws ParseException {
     jj_consume_token(ident);
+                  String ident=YakaTokenManager.identLu;
     jj_consume_token(42);
     expression();
+          expr.controleAffectation(ident);
   }
 
   static final public void lecture() throws ParseException {
@@ -237,7 +239,7 @@ public class Yaka implements Constantes, YakaConstants {
     jj_consume_token(43);
     jj_consume_token(ident);
     jj_consume_token(44);
-          
+          yvm.lireEnt(tabIdent.chercheIdent(YakaTokenManager.identLu).getValeur());
   }
 
   static final public void ecriture() throws ParseException {
@@ -426,7 +428,6 @@ public class Yaka implements Constantes, YakaConstants {
     case 47:
       jj_consume_token(47);
          expr.empilerOperation(INFEG);
-                System.out.println("Empile <=");
       break;
     case 48:
       jj_consume_token(48);
