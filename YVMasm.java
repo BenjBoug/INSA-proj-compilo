@@ -175,13 +175,13 @@ public class YVMasm extends YVM {
 		Ecriture.ecrireString(o,"; ");
 		super.istore(offset);
 		Ecriture.ecrireStringln(o,"pop ax");
-		Ecriture.ecrireStringln(o,"push word ptr [bp"+offset+"],ax");
+		Ecriture.ecrireStringln(o,"mov word ptr [bp"+offset+"],ax");
 	}
 
 	public void iconst(int valeur) {
 		Ecriture.ecrireString(o,"; ");
 		super.iconst(valeur);
-		Ecriture.ecrireStringln(o,"push "+valeur);
+		Ecriture.ecrireStringln(o,"push word ptr"+valeur);
 	}
 
 	public void ifeq(String etiquette) {
