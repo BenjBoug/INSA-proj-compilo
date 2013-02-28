@@ -1,9 +1,12 @@
-
-
 import java.io.OutputStream;
+import java.util.Stack;
 
 public class YVM implements Constantes {
 	protected OutputStream o;
+	protected Stack<Integer> stackBoucle = new Stack<Integer>();
+	protected int nbBoucles = 1;
+	protected final String labelEtiquette = "FAIRE";
+	
 
 	public YVM(String nomFich) {
 		o = Ecriture.ouvrir(nomFich+".yvm");
@@ -13,6 +16,21 @@ public class YVM implements Constantes {
 		o = Ecriture.ouvrir(nomFich+extention);
 	}
 
+	
+	public void tantque() {
+		Ecriture.ecrireStringln(o, labelEtiquette+nbBoucles);
+		stackBoucle.push(nbBoucles);
+		nbBoucles++;;
+	}
+	
+	public void faire() {
+		Ecriture.ecrireStringln(o, "iffaux "+labelEtiquette+stackBoucle.peek());
+	}
+	
+	public void fait() {
+		stackBoucle.pop();
+	}
+	
 	public void entete() {
 		Ecriture.ecrireStringln(o, "entete");
 	}
