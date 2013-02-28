@@ -221,8 +221,10 @@ void suiteInstr() : {}
 }
 
 void instruction() : {}{
-	affectation() | lecture() | ecriture()}
-
+	affectation() | lecture() | ecriture() | boucle()}
+/*
+ *affectation
+ */
 void affectation() : {}
 {	 <ident> {String ident=YakaTokenManager.identLu;} "=" expression()
 	 {expr.controleAffectation(ident);}}
@@ -233,7 +235,19 @@ void lecture() : {}{	<LIRE> "(" <ident> ")"
 }
 void ecriture()  : {}
 {	<ECRIRE> "(" (expression() | <chaine>) ")" | <ALALIGNE>
+	
 }
+
+/*
+ * Itération
+ */
+
+void boucle() : {}{	< TANTQUE > expression() < FAIRE >  suiteBoucle()
+}
+void suiteBoucle() : {}
+{
+	suiteInstr() < FAIT >";"
+}  
 
 /*
  * Expression .

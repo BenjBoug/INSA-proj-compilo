@@ -65,7 +65,7 @@ public class Declaration implements Constantes {
 		}
 		else
 		{
-			System.out.println("Erreur: la variable "+ident+" dÃ©jÃ  dÃ©clarÃ©e.");			
+			System.out.println("Erreur: la variable "+ident+" déjà  déclarée.");			
 		}
 	}
 	
