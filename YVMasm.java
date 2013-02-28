@@ -245,9 +245,9 @@ public class YVMasm extends YVM {
 		Ecriture.ecrireStringln(o,"call lirent");
 	}
 
-	public void aLaLigne(String s) {
+	public void aLaLigne() {
 		Ecriture.ecrireString(o,"; ");
-		super.aLaLigne(s);
+		super.aLaLigne();
 		Ecriture.ecrireStringln(o,"call ligsuiv");
 	}
 

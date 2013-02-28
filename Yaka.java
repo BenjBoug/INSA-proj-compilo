@@ -5,7 +5,7 @@ public class Yaka implements Constantes, YakaConstants {
     public static TabIdent tabIdent;
     public static Expression expr;
     public static YVM yvm;
-    public static int cmptVar=0;
+    public static int offsetVarTemp=0;
 
   public static void main(String args[]) {
     Yaka analyseur;
@@ -50,6 +50,7 @@ public class Yaka implements Constantes, YakaConstants {
     jj_consume_token(ident);
     bloc();
     jj_consume_token(FPROGRAMME);
+    yvm.queue();
   }
 
   static final public void bloc() throws ParseException {
@@ -77,7 +78,7 @@ public class Yaka implements Constantes, YakaConstants {
       }
       declVar();
     }
-               yvm.ouvrePrinc(cmptVar);
+               yvm.ouvrePrinc(tabIdent.nombreVariable()*2);
     suiteInstr();
   }
 
@@ -141,7 +142,6 @@ public class Yaka implements Constantes, YakaConstants {
     type();
     jj_consume_token(ident);
   decl.ajoutVariable(YakaTokenManager.identLu);
-  cmptVar++;
     label_4:
     while (true) {
       switch ((jj_ntk==-1)?jj_ntk():jj_ntk) {
@@ -155,7 +155,6 @@ public class Yaka implements Constantes, YakaConstants {
       jj_consume_token(40);
       jj_consume_token(ident);
       decl.ajoutVariable(YakaTokenManager.identLu);
-      cmptVar++;
     }
     jj_consume_token(41);
   }
@@ -228,8 +227,10 @@ public class Yaka implements Constantes, YakaConstants {
 
   static final public void affectation() throws ParseException {
     jj_consume_token(ident);
+           offsetVarTemp = tabIdent.valeurIdent(YakaTokenManager.identLu);
     jj_consume_token(42);
     expression();
+          yvm.istore(offsetVarTemp);
   }
 
   static final public void lecture() throws ParseException {
@@ -237,7 +238,7 @@ public class Yaka implements Constantes, YakaConstants {
     jj_consume_token(43);
     jj_consume_token(ident);
     jj_consume_token(44);
-          
+          yvm.lireEnt(tabIdent.valeurIdent(YakaTokenManager.identLu));
   }
 
   static final public void ecriture() throws ParseException {
@@ -254,8 +255,10 @@ public class Yaka implements Constantes, YakaConstants {
       case 43:
       case 51:
         expression();
+                                    yvm.ecrireEnt();
         break;
       case chaine:
+                                                         yvm.ecrireChaine(YakaTokenManager.chaineLue);
         jj_consume_token(chaine);
         break;
       default:
@@ -267,6 +270,7 @@ public class Yaka implements Constantes, YakaConstants {
       break;
     case ALALIGNE:
       jj_consume_token(ALALIGNE);
+                       yvm.aLaLigne();
       break;
     default:
       jj_la1[10] = jj_gen;
@@ -390,7 +394,7 @@ public class Yaka implements Constantes, YakaConstants {
     case ident:
       jj_consume_token(ident);
  expr.empilerIdent(YakaTokenManager.identLu);
- yvm.iconst(tabIdent.chercheIdent(YakaTokenManager.identLu).getValeur());
+ yvm.iload(tabIdent.valeurIdent(YakaTokenManager.identLu));
       break;
     case TRUE:
       jj_consume_token(TRUE);
@@ -426,7 +430,6 @@ public class Yaka implements Constantes, YakaConstants {
     case 47:
       jj_consume_token(47);
          expr.empilerOperation(INFEG);
-                System.out.println("Empile <=");
       break;
     case 48:
       jj_consume_token(48);

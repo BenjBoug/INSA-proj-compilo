@@ -106,7 +106,7 @@ public class YVM implements Constantes {
 	}
 	
 	public void ecrireChaine(String s) {
-		Ecriture.ecrireStringln(o, "ecrireChaine \""+s+"\"");
+		Ecriture.ecrireStringln(o, "ecrireChaine "+s);
 	}
 	
 	public void ecrireBool() {
@@ -117,12 +117,11 @@ public class YVM implements Constantes {
 		Ecriture.ecrireStringln(o, "lireEnt "+offset);
 	}
 	
-	public void aLaLigne(String s) {
+	public void aLaLigne() {
 		Ecriture.ecrireStringln(o, "aLaLigne");
 	}
 
 	public void operation(int op) {
-		System.out.println(op);
 		switch (op)
 		{
 			case PLUS:
@@ -165,4 +164,5 @@ public class YVM implements Constantes {
 				break;
 		}
 	}
+
 }

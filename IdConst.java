@@ -18,5 +18,8 @@ public class IdConst extends Ident {
 	public int getVarOrConst() {
 		return CONST;
 	}
+	
+	public void setOffset(int offset) {
+	}
 
 }
