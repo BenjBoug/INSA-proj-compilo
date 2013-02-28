@@ -46,6 +46,25 @@ public class Expression implements Constantes {
 		return operateur.peek();
 	}
 	
+	public void controleAffectation(String ident)
+	{
+		if (tabIdent.existeIdent(ident))
+		{
+			Ident id = tabIdent.chercheIdent(ident);
+			if (id.getType()!=types.peek())
+			{
+				//error
+				System.out.println("Erreur, le type de la partie droite n'est pas le meme que la partie gauche.");
+			}
+		}
+		else
+		{
+			//erreur ident existe pas
+			System.out.println("Erreur, l'identifiant n'existe pas.");
+		}
+		
+	}
+	
 	
 	public boolean operation()
 	{

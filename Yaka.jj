@@ -225,7 +225,9 @@ void instruction() : {}{
 
 void affectation() : {}
 {	 <ident>	 { offsetVarTemp = tabIdent.valeurIdent(YakaTokenManager.identLu);}	   "=" expression()
-	 {yvm.istore(offsetVarTemp);}}
+	 {yvm.istore(offsetVarTemp);
+	 expr.controleAffectation(ident);}}
+
 
 void lecture() : {}{	<LIRE> "(" <ident> ")"
 	{	  yvm.lireEnt(tabIdent.valeurIdent(YakaTokenManager.identLu));

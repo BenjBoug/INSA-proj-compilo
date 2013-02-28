@@ -231,6 +231,7 @@ public class Yaka implements Constantes, YakaConstants {
     jj_consume_token(42);
     expression();
           yvm.istore(offsetVarTemp);
+         expr.controleAffectation(ident);
   }
 
   static final public void lecture() throws ParseException {
