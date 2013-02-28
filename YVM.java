@@ -28,7 +28,7 @@ public class YVM implements Constantes {
 	}
 	
 	public void fait() {
-		stackBoucle.pop();
+		Ecriture.ecrireStringln(o, "goto"+labelEtiquette+stackBoucle.pop());
 	}
 	
 	public void entete() {
