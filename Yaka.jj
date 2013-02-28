@@ -23,7 +23,7 @@ public class Yaka implements Constantes {
     public static TabIdent tabIdent;
     public static Expression expr;
     public static YVM yvm;
-    public static int cmptVar=0;
+    public static int offsetVarTemp=0;
 
   public static void main(String args[]) { 
     Yaka analyseur;
@@ -148,12 +148,14 @@ void analyse() : {}
 {
    <PROGRAMME> {yvm.entete();} <ident>	
    bloc()
-   <FPROGRAMME> 
+   <FPROGRAMME>
+   {yvm.queue();}
+   
 }
 
 void bloc() : {}{
  (declConst())*
- (declVar())* {yvm.ouvrePrinc(cmptVar);}		
+ (declVar())* {yvm.ouvrePrinc(tabIdent.nombreVariable()*2);}		
    suiteInstr() 
 }
 
@@ -196,12 +198,10 @@ void declVar() : {}
   <VAR> type()	
   <ident>	{
   decl.ajoutVariable(YakaTokenManager.identLu);
-  cmptVar++;
   }	
   ("," 
       <ident> {
       decl.ajoutVariable(YakaTokenManager.identLu);
-      cmptVar++;
       }	 
   )* ";"
 }
@@ -229,12 +229,17 @@ void affectation() : {}
 {	 <ident> {String ident=YakaTokenManager.identLu;} "=" expression()
 	 {expr.controleAffectation(ident);}}
 
+void affectation() : {}
+{	 <ident>	 { offsetVarTemp = tabIdent.valeurIdent(YakaTokenManager.identLu);}	   "=" expression()
+	 {yvm.istore(offsetVarTemp);
+	 expr.controleAffectation(ident);}}
+
 void lecture() : {}{	<LIRE> "(" <ident> ")"
-	{	  yvm.lireEnt(tabIdent.chercheIdent(YakaTokenManager.identLu).getValeur());
+	{	  yvm.lireEnt(tabIdent.valeurIdent(YakaTokenManager.identLu));
 	}
 }
 void ecriture()  : {}
-{	<ECRIRE> "(" (expression() | <chaine>) ")" | <ALALIGNE>
+{	<ECRIRE> "(" (expression() {yvm.ecrireEnt();} | {yvm.ecrireChaine(YakaTokenManager.chaineLue);} <chaine>) ")" | <ALALIGNE> {yvm.aLaLigne();}
 	
 }
 
@@ -243,7 +248,7 @@ void ecriture()  : {}
  */
 
 void boucle() : {}{	< TANTQUE > expression() < FAIRE >  suiteBoucle()
-}
+{}
 void suiteBoucle() : {}
 {
 	suiteInstr() < FAIT >";"
@@ -299,7 +304,7 @@ void valeur () : {}
   } 		
  | <ident> {
  expr.empilerIdent(YakaTokenManager.identLu);
- yvm.iconst(tabIdent.chercheIdent(YakaTokenManager.identLu).getValeur());
+ yvm.iload(tabIdent.valeurIdent(YakaTokenManager.identLu));
  } 		
  | <TRUE> {
  expr.empilerBool(VRAI);

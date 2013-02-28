@@ -3,8 +3,8 @@ public abstract class Ident implements Constantes {
 
 	private int type;
 	private String nom;
-	final int VAR = 0;
-	final int CONST = 1;
+	final static int VAR = 0;
+	final static int CONST = 1;
 
 	public Ident(int type, String nom) {
 		this.type = type;
@@ -27,9 +27,14 @@ public abstract class Ident implements Constantes {
 		this.nom = nom;
 	}
 
+	public String toString() {
+		return "Type : " + getVarOrConst() + "Nom : " + getNom() + "Valeur : " + getValeur() ; 
+	}
 	public abstract int getValeur();
 	
 	public abstract void setValeur(int valeur);
 
 	public abstract int getVarOrConst();
+	
+	public abstract void setOffset(int o);
 }

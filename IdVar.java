@@ -23,5 +23,9 @@ public class IdVar extends Ident {
 	public int getVarOrConst() {
 		return VAR;
 	}
+	
+	public void setOffset(int offset) {
+		setValeur(offset);
+	}
 
 }
