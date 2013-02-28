@@ -4,7 +4,7 @@ public class Yaka implements Constantes, YakaConstants {
     public static Declaration decl;
     public static TabIdent tabIdent;
     public static Expression expr;
-    public static YVM yvm;
+    public static YVMasm yvm;
     public static String nomVarTemp="";
 
   public static void main(String args[]) {
@@ -31,7 +31,7 @@ public class Yaka implements Constantes, YakaConstants {
       decl = new Declaration(tabIdent);
       expr = new Expression(tabIdent);
       analyseur = new Yaka(input);
-      yvm = new YVM("test");
+      yvm = new YVMasm("test");
       analyseur.analyse();
       System.out.println("analyse syntaxique reussie!");
     } catch (ParseException e) {
