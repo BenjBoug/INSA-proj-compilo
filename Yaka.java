@@ -267,10 +267,10 @@ public class Yaka implements Constantes, YakaConstants {
       case 43:
       case 51:
         expression();
-                                    yvm.ecrireEnt();
+                                    if (expr.getSommetTypes() == Constantes.BOOLEAN) {yvm.ecrireBool();}else{yvm.ecrireEnt();}
         break;
       case chaine:
-                                                         yvm.ecrireChaine(YakaTokenManager.chaineLue);
+                                                                                                                                   yvm.ecrireChaine(YakaTokenManager.chaineLue);
         jj_consume_token(chaine);
         break;
       default:
@@ -282,7 +282,7 @@ public class Yaka implements Constantes, YakaConstants {
       break;
     case ALALIGNE:
       jj_consume_token(ALALIGNE);
-                                                                                                                                    yvm.aLaLigne();
+                                                                                                                                                                                                              yvm.aLaLigne();
       break;
     default:
       jj_la1[10] = jj_gen;

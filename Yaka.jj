@@ -235,7 +235,7 @@ void lecture() : {}{	<LIRE> "(" <ident> ")"
 	}
 }
 void ecriture()  : {}
-{	<ECRIRE> "(" (expression() {yvm.ecrireEnt();} | {yvm.ecrireChaine(YakaTokenManager.chaineLue);} <chaine>) ")" | <ALALIGNE> {yvm.aLaLigne();}
+{	<ECRIRE> "(" (expression() {if (expr.getSommetTypes() == Constantes.BOOLEAN) {yvm.ecrireBool();}else{yvm.ecrireEnt();}} | {yvm.ecrireChaine(YakaTokenManager.chaineLue);} <chaine>) ")" | <ALALIGNE> {yvm.aLaLigne();}
 	
 }
 
