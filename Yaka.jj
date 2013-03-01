@@ -49,7 +49,7 @@ public class Yaka implements Constantes {
       decl = new Declaration(tabIdent);
       expr = new Expression(tabIdent);
       analyseur = new Yaka(input);
-      yvm = new YVMasm("test");
+      yvm = new YVMasm(args[args.length-1]);
       analyseur.analyse();
       System.out.println("analyse syntaxique reussie!");
     } catch (ParseException e) {
@@ -243,11 +243,11 @@ void ecriture()  : {}
  * Itération
  */
 
-void boucle() : {}{	< TANTQUE > expression() {expr.testExprBool();} < FAIRE >  suiteBoucle()
+void boucle() : {}{	< TANTQUE > {yvm.tantque();} expression() {expr.testExprBool();} < FAIRE > {yvm.faire();}  suiteBoucle()
 }
 void suiteBoucle() : {}
 {
-	suiteInstr() < FAIT >
+	suiteInstr() < FAIT > {yvm.fait();}
 }
 
 /*
@@ -274,7 +274,8 @@ void expression() : {}
 {
   simpleExpr() 
   (opRel() 
-  simpleExpr() {yvm.operation(expr.getSommetOp()); expr.operation();}
+  simpleExpr() {yvm.operation(expr.getSommetOp());
+  expr.operation();}
   )?
 }
 
