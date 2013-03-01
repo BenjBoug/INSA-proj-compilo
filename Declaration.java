@@ -16,7 +16,7 @@ public class Declaration implements Constantes {
 		}
 		else
 		{
-			System.out.println("Erreur: la constante "+id+" déjà déclarée.");
+			System.out.println("Erreur: la constante "+id+" est deja declaree.");
 		}
 	}
 	public void ajoutConstIdent(String id, String ident)
@@ -31,12 +31,12 @@ public class Declaration implements Constantes {
 			}
 			else
 			{
-				System.out.println("Erreur: la constante "+ident+" n'est pas déclarée.");
+				System.out.println("Erreur: la constante "+ident+" n'est pas declaree.");
 			}
 		}
 		else
 		{
-			System.out.println("Erreur: la constante "+id+" déjà déclarée.");
+			System.out.println("Erreur: la constante "+id+" est deja uilisee.");
 		}
 	}
 	public void ajoutConstBool(String id, int val)
@@ -47,7 +47,7 @@ public class Declaration implements Constantes {
 		}
 		else
 		{
-			System.out.println("Erreur: la constante "+id+" déjà déclarée.");
+			System.out.println("Erreur: la constante "+id+" est deja declaree.");
 		}
 	}
 	
@@ -65,7 +65,7 @@ public class Declaration implements Constantes {
 		}
 		else
 		{
-			System.out.println("Erreur: la variable "+ident+" d�j� d�clar�e.");			
+			System.out.println("Erreur: la variable "+ident+" est deja declaree.");			
 		}
 	}
 	

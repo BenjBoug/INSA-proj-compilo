@@ -53,14 +53,12 @@ public class Expression implements Constantes {
 			Ident id = tabIdent.chercheIdent(ident);
 			if (id.getType()!=types.peek())
 			{
-				//error
-				System.out.println("Erreur, le type de la partie droite n'est pas le meme que la partie gauche.");
+				System.out.println("Erreur: le type de la partie droite n'est pas le meme que la partie gauche.");
 			}
 		}
 		else
 		{
-			//erreur ident existe pas
-			System.out.println("Erreur, l'identifiant n'existe pas.");
+			System.out.println("Erreur: l'identifiant n'existe pas.");
 		}
 		
 	}
@@ -86,7 +84,7 @@ public class Expression implements Constantes {
 					case MUL:
 					case DIV:
 						if (tabOpe[0][type1]==ERROR)
-							System.out.println("Erreur: l'expression n'est pas correct.");
+							System.out.println("Erreur: l'expression n'est pas correcte.");
 						types.push(tabOpe[0][type1]);
 						break;
 						
@@ -95,21 +93,21 @@ public class Expression implements Constantes {
 					case INFEG:
 					case SUPEG:
 						if (tabOpe[1][type1]==ERROR)
-							System.out.println("Erreur: l'expression n'est pas correct.");
+							System.out.println("Erreur: l'expression n'est pas correcte.");
 						types.push(tabOpe[1][type1]);
 						break;
 		
 					case EGAL:
 					case NEGAL:
 						if (tabOpe[2][type1]==ERROR)
-							System.out.println("Erreur: l'expression n'est pas correct.");
+							System.out.println("Erreur: l'expression n'est pas correcte.");
 						types.push(tabOpe[2][type1]);				
 						break;
 						
 					case ET:
 					case OU:
 						if (tabOpe[3][type1]==ERROR)
-							System.out.println("Erreur: l'expression n'est pas correct.");
+							System.out.println("Erreur: l'expression n'est pas correcte.");
 						types.push(tabOpe[3][type1]);
 						
 						break;
@@ -118,7 +116,7 @@ public class Expression implements Constantes {
 			}
 			else
 			{
-				System.out.println("Erreur: l'expression n'est pas correct.");
+				System.out.println("Erreur: l'expression n'est pas correcte.");
 				types.push(ERROR);
 				return false;
 			}
@@ -144,7 +142,8 @@ public class Expression implements Constantes {
 		}
 		else
 		{
-			//erreur
+			System.out.println("Erreur: la variable "+nomIdent+" n'existe pas.");
+			empilerType(ERROR);
 		}
 	}
 
@@ -154,6 +153,14 @@ public class Expression implements Constantes {
 
 	public void setTabIdent(TabIdent tabIdent) {
 		this.tabIdent = tabIdent;
+	}
+	
+	public void testExprBool()
+	{
+		if (types.peek() != BOOLEAN)
+		{
+			System.out.println("Erreur: l'expression n'est pas booléenne.");			
+		}
 	}
 
 

@@ -168,14 +168,14 @@ public class YVMasm extends YVM {
 	public void iload(int offset) {
 		Ecriture.ecrireString(o,"; ");
 		super.iload(offset);
-		Ecriture.ecrireStringln(o,"push word ptr [bp"+offset+"]");
+		Ecriture.ecrireStringln(o,"push word ptr [bp-"+offset+"]");
 	}
 
 	public void istore(int offset) {
 		Ecriture.ecrireString(o,"; ");
 		super.istore(offset);
 		Ecriture.ecrireStringln(o,"pop ax");
-		Ecriture.ecrireStringln(o,"mov word ptr [bp"+offset+"],ax");
+		Ecriture.ecrireStringln(o,"mov word ptr [bp-"+offset+"],ax");
 	}
 
 	public void iconst(int valeur) {

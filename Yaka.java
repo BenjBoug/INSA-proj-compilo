@@ -33,7 +33,6 @@ public class Yaka implements Constantes, YakaConstants {
       analyseur = new Yaka(input);
       yvm = new YVMasm("test");
       analyseur.analyse();
-      System.out.println("analyse syntaxique reussie!");
     } catch (ParseException e) {
       String msg = e.getMessage();
       msg = msg.substring(0,msg.indexOf("\u005cn"));
@@ -51,6 +50,7 @@ public class Yaka implements Constantes, YakaConstants {
     bloc();
     jj_consume_token(FPROGRAMME);
     yvm.queue();
+      System.out.println("analyse syntaxique reussie!");
   }
 
   static final public void bloc() throws ParseException {
@@ -297,6 +297,7 @@ public class Yaka implements Constantes, YakaConstants {
   static final public void boucle() throws ParseException {
     jj_consume_token(TANTQUE);
     expression();
+                                  expr.testExprBool();
     jj_consume_token(FAIRE);
     suiteBoucle();
   }
@@ -312,6 +313,7 @@ public class Yaka implements Constantes, YakaConstants {
   static final public void condition() throws ParseException {
     jj_consume_token(SI);
     expression();
+                            expr.testExprBool();
     jj_consume_token(ALORS);
     suiteInstr();
     suiteCondi();
