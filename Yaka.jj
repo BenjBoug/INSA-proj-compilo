@@ -301,7 +301,9 @@ void terme() : {}
 }
 void facteur() : {}
 {   primaire() 
-  |  opNeg() primaire() 
+  |  opNeg() primaire()  {
+  yvm.operation(expr.getSommetOp());
+  }
 }
 
 void primaire (): {}
