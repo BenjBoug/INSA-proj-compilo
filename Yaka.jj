@@ -301,9 +301,7 @@ void terme() : {}
 }
 void facteur() : {}
 {   primaire() 
-  |  opNeg() primaire()  {
-  yvm.operation(expr.getSommetOp());
-  }
+  |  opNeg() primaire() {yvm.operation(expr.getSommetOp());expr.operation();} 
 }
 
 void primaire (): {}
@@ -363,9 +361,9 @@ void opMul() : {}
 } 
 
 void opNeg() : {}
-{ "-"	
+{ "-" {expr.empilerOperation(NEG);}	
  | <NON>
- {expr.empilerOperation(NEG);}	
+ {expr.empilerOperation(NOT);}	
 
 }
 

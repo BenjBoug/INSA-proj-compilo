@@ -183,6 +183,9 @@ public class YVM implements Constantes {
 			case NEG:
 				ineg();
 				break;
+			case NOT:
+				inot();
+				break;
 		}
 	}
 
