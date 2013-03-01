@@ -4,7 +4,7 @@ public class Yaka implements Constantes, YakaConstants {
     public static Declaration decl;
     public static TabIdent tabIdent;
     public static Expression expr;
-    public static YVMasm yvm;
+    public static YVM yvm;
     public static String nomVarTemp="";
 
   public static void main(String args[]) {
@@ -31,7 +31,7 @@ public class Yaka implements Constantes, YakaConstants {
       decl = new Declaration(tabIdent);
       expr = new Expression(tabIdent);
       analyseur = new Yaka(input);
-      yvm = new YVMasm("test");
+      yvm = new YVM(args[args.length-1]);
       analyseur.analyse();
       System.out.println("analyse syntaxique reussie!");
     } catch (ParseException e) {
@@ -296,14 +296,17 @@ public class Yaka implements Constantes, YakaConstants {
  */
   static final public void boucle() throws ParseException {
     jj_consume_token(TANTQUE);
+                     yvm.tantque();
     expression();
     jj_consume_token(FAIRE);
+                                                             yvm.faire();
     suiteBoucle();
   }
 
   static final public void suiteBoucle() throws ParseException {
     suiteInstr();
     jj_consume_token(FAIT);
+                               yvm.fait();
   }
 
 /*
@@ -352,7 +355,8 @@ public class Yaka implements Constantes, YakaConstants {
     case 49:
       opRel();
       simpleExpr();
-                expr.operation();
+                yvm.operation(expr.getSommetOp());
+  expr.operation();
       break;
     default:
       jj_la1[12] = jj_gen;

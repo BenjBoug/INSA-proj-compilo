@@ -5,7 +5,8 @@ public class YVM implements Constantes {
 	protected OutputStream o;
 	protected Stack<Integer> stackBoucle = new Stack<Integer>();
 	protected int nbBoucles = 1;
-	protected final String labelEtiquette = "FAIRE";
+	protected final String labelEtiquetteDebut = "FAIRE";
+	protected final String labelEtiquetteFin = "FAIT";
 	
 
 	public YVM(String nomFich) {
@@ -18,17 +19,19 @@ public class YVM implements Constantes {
 
 	
 	public void tantque() {
-		Ecriture.ecrireStringln(o, labelEtiquette+nbBoucles);
+		Ecriture.ecrireStringln(o, labelEtiquetteDebut+nbBoucles+":");
 		stackBoucle.push(nbBoucles);
 		nbBoucles++;;
 	}
 	
 	public void faire() {
-		Ecriture.ecrireStringln(o, "iffaux "+labelEtiquette+stackBoucle.peek());
+		Ecriture.ecrireStringln(o, "iffaux "+labelEtiquetteFin+stackBoucle.peek());
 	}
 	
 	public void fait() {
-		Ecriture.ecrireStringln(o, "goto "+labelEtiquette+stackBoucle.pop());
+		Ecriture.ecrireStringln(o, "goto "+labelEtiquetteDebut+stackBoucle.peek());
+		Ecriture.ecrireStringln("");
+		Ecriture.ecrireStringln(o, labelEtiquetteFin+stackBoucle.pop() + ":");
 	}
 	
 	public void entete() {
