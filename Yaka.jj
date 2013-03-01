@@ -318,7 +318,13 @@ void valeur () : {}
   } 		
  | <ident> {
  expr.empilerIdent(YakaTokenManager.identLu);
- yvm.iload(tabIdent.valeurIdent(YakaTokenManager.identLu));
+ Ident i = tabIdent.chercheIdent(YakaTokenManager.identLu);
+ if (i.getVarOrConst() == Ident.CONST) {
+ 	yvm.iconst(i.getValeur());
+ } else {
+ 	yvm.iload(i.getValeur());
+ }
+ 
  } 		
  | <TRUE> {
  expr.empilerBool(VRAI);

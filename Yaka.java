@@ -457,7 +457,12 @@ public class Yaka implements Constantes, YakaConstants {
     case ident:
       jj_consume_token(ident);
  expr.empilerIdent(YakaTokenManager.identLu);
- yvm.iload(tabIdent.valeurIdent(YakaTokenManager.identLu));
+ Ident i = tabIdent.chercheIdent(YakaTokenManager.identLu);
+ if (i.getVarOrConst() == Ident.CONST) {
+        yvm.iconst(i.getValeur());
+ } else {
+        yvm.iload(i.getValeur());
+ }
       break;
     case TRUE:
       jj_consume_token(TRUE);
