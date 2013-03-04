@@ -4,6 +4,9 @@ import java.util.Stack;
 public class YVM implements Constantes {
 	protected OutputStream o;
 	protected Iteration iterations = new Iteration();
+	protected Conditionnelle conditions = new Conditionnelle();
+	
+	protected Etiquette structureConditionnelleActuelle;
 
 	public YVM(String nomFich) {
 		o = Ecriture.ouvrir(nomFich+".yvm");
@@ -13,14 +16,32 @@ public class YVM implements Constantes {
 		o = Ecriture.ouvrir(nomFich+extention);
 	}
 
+	public void si()
+	{
+		conditions.nouvelleConditionnelle();
+		structureConditionnelleActuelle = conditions;
+		Ecriture.ecrireStringln(o, conditions.getEtiquetteDebut()+":");
+	}
+	
+	public void sinon()
+	{
+		Ecriture.ecrireStringln(o, "goto "+conditions.getEtiquetteFin());
+		Ecriture.ecrireStringln(o, conditions.getEtiquetteSinon()+ ":");
+	}
+	
+	public void fsi()
+	{
+		Ecriture.ecrireStringln(o, conditions.getEtiquetteFinAndFinish()+ ":");
+	}
 	
 	public void tantque() {
-		Ecriture.ecrireStringln(o, iterations.getLabelIteration()+":");
-		iterations.nouvelleIterationb();
+		iterations.nouvelleIteration();
+		structureConditionnelleActuelle = iterations;
+		Ecriture.ecrireStringln(o, iterations.getEtiquetteDebut()+":");
 	}
 	
 	public void iffaux() {
-		Ecriture.ecrireStringln(o, "iffaux "+iterations.getEtiquetteFin());
+		Ecriture.ecrireStringln(o, "iffaux "+structureConditionnelleActuelle.getEtiquetteSuivante());
 	}
 		
 	public void fait() {
@@ -157,6 +178,7 @@ public class YVM implements Constantes {
 				break;
 			case SUP:
 				isup();
+				break; // lol ... ça marche beaucoup moins bien c'est sur hein !!
 			case INFEG:
 				iinfegal();
 				break;

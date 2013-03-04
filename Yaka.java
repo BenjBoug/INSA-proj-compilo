@@ -4,7 +4,7 @@ public class Yaka implements Constantes, YakaConstants {
     public static Declaration decl;
     public static TabIdent tabIdent;
     public static Expression expr;
-    public static YVMasm yvm;
+    public static YVM yvm;
     public static String nomVarTemp="";
 
   public static void main(String args[]) {
@@ -31,7 +31,7 @@ public class Yaka implements Constantes, YakaConstants {
       decl = new Declaration(tabIdent);
       expr = new Expression(tabIdent);
       analyseur = new Yaka(input);
-      yvm = new YVMasm(args[args.length-1]);
+      yvm = new YVM(args[args.length-1]);
       analyseur.analyse();
       System.out.println("analyse syntaxique reussie!");
     } catch (ParseException e) {
@@ -315,9 +315,11 @@ public class Yaka implements Constantes, YakaConstants {
  */
   static final public void condition() throws ParseException {
     jj_consume_token(SI);
+                yvm.si();
     expression();
-                            expr.testExprBool();
+                                        expr.testExprBool();
     jj_consume_token(ALORS);
+                                                                          yvm.iffaux();
     suiteInstr();
     suiteCondi();
   }
@@ -326,6 +328,7 @@ public class Yaka implements Constantes, YakaConstants {
     switch ((jj_ntk==-1)?jj_ntk():jj_ntk) {
     case FSI:
       jj_consume_token(FSI);
+                  yvm.fsi();
       break;
     case SINON:
       sinonCondi();
@@ -339,8 +342,10 @@ public class Yaka implements Constantes, YakaConstants {
 
   static final public void sinonCondi() throws ParseException {
     jj_consume_token(SINON);
+                   yvm.sinon();
     suiteInstr();
     jj_consume_token(FSI);
+                                                       yvm.fsi();
   }
 
 /*
