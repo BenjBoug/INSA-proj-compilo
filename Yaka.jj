@@ -240,10 +240,10 @@ void ecriture()  : {}
 }
 
 /*
- * Itération
+ * Itï¿½ration
  */
 
-void boucle() : {}{	< TANTQUE > {yvm.tantque();} expression() {expr.testExprBool();} < FAIRE > {yvm.faire();}  suiteBoucle()
+void boucle() : {}{	< TANTQUE > {yvm.tantque();} expression() {expr.testExprBool();} < FAIRE > {yvm.iffaux();}  suiteBoucle()
 }
 void suiteBoucle() : {}
 {

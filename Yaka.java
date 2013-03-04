@@ -292,7 +292,7 @@ public class Yaka implements Constantes, YakaConstants {
   }
 
 /*
- * Itération
+ * Itï¿½ration
  */
   static final public void boucle() throws ParseException {
     jj_consume_token(TANTQUE);
@@ -300,7 +300,7 @@ public class Yaka implements Constantes, YakaConstants {
     expression();
                                                    expr.testExprBool();
     jj_consume_token(FAIRE);
-                                                                                    yvm.faire();
+                                                                                    yvm.iffaux();
     suiteBoucle();
   }
 

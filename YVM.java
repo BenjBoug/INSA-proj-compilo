@@ -3,11 +3,7 @@ import java.util.Stack;
 
 public class YVM implements Constantes {
 	protected OutputStream o;
-	protected Stack<Integer> stackBoucle = new Stack<Integer>();
-	protected int nbBoucles = 1;
-	protected final String labelEtiquetteDebut = "FAIRE";
-	protected final String labelEtiquetteFin = "FAIT";
-	
+	protected Iteration iterations = new Iteration();
 
 	public YVM(String nomFich) {
 		o = Ecriture.ouvrir(nomFich+".yvm");
@@ -19,19 +15,18 @@ public class YVM implements Constantes {
 
 	
 	public void tantque() {
-		Ecriture.ecrireStringln(o, labelEtiquetteDebut+nbBoucles+":");
-		stackBoucle.push(nbBoucles);
-		nbBoucles++;;
+		Ecriture.ecrireStringln(o, iterations.getLabelIteration()+":");
+		iterations.nouvelleIterationb();
 	}
 	
-	public void faire() {
-		Ecriture.ecrireStringln(o, "iffaux "+labelEtiquetteFin+stackBoucle.peek());
+	public void iffaux() {
+		Ecriture.ecrireStringln(o, "iffaux "+iterations.getEtiquetteFin());
 	}
-	
+		
 	public void fait() {
-		Ecriture.ecrireStringln(o, "goto "+labelEtiquetteDebut+stackBoucle.peek());
-		Ecriture.ecrireStringln("");
-		Ecriture.ecrireStringln(o, labelEtiquetteFin+stackBoucle.pop() + ":");
+		Ecriture.ecrireStringln(o, "goto "+iterations.getEtiquetteDebut());
+		Ecriture.ecrireStringln(o,"");
+		Ecriture.ecrireStringln(o, iterations.getEtiquetteFinAndFinish()+ ":");
 	}
 	
 	public void entete() {

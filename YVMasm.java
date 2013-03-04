@@ -257,5 +257,20 @@ public class YVMasm extends YVM {
 		super.aLaLigne();
 		Ecriture.ecrireStringln(o,"call ligsuiv");
 	}
+	
+	
+	public void iffaux() {
+		Ecriture.ecrireString(o,"; ");
+		super.iffaux();
+		Ecriture.ecrireStringln(o, "pop ax");
+		Ecriture.ecrireStringln(o, "cmp ax,0");
+		Ecriture.ecrireStringln(o, "je "+iterations.getEtiquetteFin());
+	}
+		
+	public void fait() {
+		Ecriture.ecrireStringln(o, ";goto "+iterations.getEtiquetteDebut());
+		Ecriture.ecrireStringln(o, "jmp "+iterations.getEtiquetteDebut()+"\n");
+		Ecriture.ecrireStringln(o, iterations.getEtiquetteFinAndFinish()+ ":");
+	}
 
 }
