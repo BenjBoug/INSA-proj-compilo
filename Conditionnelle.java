@@ -7,7 +7,6 @@ public class Conditionnelle implements Etiquette {
 	protected int nbCondition = 0; 	
 	protected final String labelEtiquetteSinon = "SINON";
 	protected final String labelEtiquetteFin = "FSI";
-	private boolean sinon = false;
 
 	
 
@@ -41,6 +40,6 @@ public class Conditionnelle implements Etiquette {
 
 	@Override
 	public String getEtiquetteSuivante() {
-		return (sinon)?getEtiquetteSinon():getEtiquetteFin();
+		return getEtiquetteSinon();
 	}
 }

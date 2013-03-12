@@ -264,13 +264,19 @@ public class YVMasm extends YVM {
 		super.iffaux();
 		Ecriture.ecrireStringln(o, "pop ax");
 		Ecriture.ecrireStringln(o, "cmp ax,0");
-		Ecriture.ecrireStringln(o, "je "+iterations.getEtiquetteFin());
+		Ecriture.ecrireStringln(o, "je "+structureConditionnelleActuelle.getEtiquetteSuivante());
 	}
 		
 	public void fait() {
 		Ecriture.ecrireStringln(o, ";goto "+iterations.getEtiquetteDebut());
 		Ecriture.ecrireStringln(o, "jmp "+iterations.getEtiquetteDebut()+"\n");
 		Ecriture.ecrireStringln(o, iterations.getEtiquetteFinAndFinish()+ ":");
+	}
+	
+	public void sinon()
+	{	
+		Ecriture.ecrireStringln(o, "jmp "+conditions.getEtiquetteFin());
+		Ecriture.ecrireStringln(o, conditions.getEtiquetteSinon()+ ":");
 	}
 
 }
