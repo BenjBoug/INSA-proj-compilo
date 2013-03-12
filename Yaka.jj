@@ -146,8 +146,11 @@ TOKEN  :
 /**************************************/
 void analyse() : {}
 {
-   <PROGRAMME> {yvm.entete();} <ident>	
+   <PROGRAMME> {yvm.entete();} <ident>
+   (declFonction())*	
+   <PRINCIPAL>
    bloc()
+   <FPRINCIPAL>
    <FPROGRAMME>
    {yvm.queue();}
    
@@ -157,6 +160,30 @@ void bloc() : {}{
  (declConst())*
  (declVar())* {yvm.ouvrePrinc(tabIdent.nombreVariable()*2);}		
    suiteInstr() 
+}
+
+void declFonction() : {}
+{
+	type() <FONCTION> <ident> paramForms()
+	bloc()
+	<FFONCTION>
+}
+
+void paramForms() : {}
+{
+	"(" 
+		(
+		paramForm() 
+		
+		("," paramForm())*
+		
+		)? 
+	")"
+}
+
+void paramForm() : {}
+{
+	type() <ident>
 }
 
 void declConst() : {}
@@ -221,7 +248,13 @@ void suiteInstr() : {}
 }
 
 void instruction() : {}{
-	affectation() | lecture() | ecriture() | boucle() | condition()}
+	affectation() | lecture() | ecriture() | boucle() | condition() | retourne()}
+
+void retourne() : {}
+{
+	<RETOURNE> expression()
+}
+
 /*
  *affectation
  */
@@ -316,16 +349,20 @@ void valeur () : {}
   expr.empilerEnt(YakaTokenManager.entierLu); 
   yvm.iconst(YakaTokenManager.entierLu);
   } 		
- | <ident> {
- expr.empilerIdent(YakaTokenManager.identLu);
- Ident i = tabIdent.chercheIdent(YakaTokenManager.identLu);
- if (i.getVarOrConst() == Ident.CONST) {
- 	yvm.iconst(i.getValeur());
- } else {
- 	yvm.iload(i.getValeur());
- }
+ | <ident> 
+	 {
+		 expr.empilerIdent(YakaTokenManager.identLu);
+		 Ident i = tabIdent.chercheIdent(YakaTokenManager.identLu);
+		 if (i.getVarOrConst() == Ident.CONST) {
+		 	yvm.iconst(i.getValeur());
+		 } else {
+		 	yvm.iload(i.getValeur());
+		 }
+		 
+	 } 	
  
- } 		
+ 	(argumentsFonction())?
+ 	
  | <TRUE> {
  expr.empilerBool(VRAI);
  yvm.iconst(VRAI);
@@ -334,6 +371,11 @@ void valeur () : {}
  expr.empilerBool(FAUX);
  yvm.iconst(FAUX);
  }	
+}
+
+void argumentsFonction() : {}
+{
+	"(" (expression() ("," expression())*)? ")"
 }
 
 void opRel() : {}
