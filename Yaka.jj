@@ -164,9 +164,9 @@ void bloc() : {}{
 
 void declFonction() : {}
 {
-	type() <FONCTION> <ident> paramForms()
+	type() <FONCTION> <ident> {tabIdent.ajouteFonction(YakaTokenManager.identLu);} paramForms()
 	bloc()
-	<FFONCTION>
+	<FFONCTION> {tabIdent.videLocaux();}
 }
 
 void paramForms() : {}
@@ -183,7 +183,7 @@ void paramForms() : {}
 
 void paramForm() : {}
 {
-	type() <ident>
+	type() <ident> {tabIdent.ajoutParam(YakaTokenManager.identLu);}
 }
 
 void declConst() : {}
@@ -235,8 +235,8 @@ void declVar() : {}
 
 void type() :{}
 {
-   <ENT> 	{decl.definirTypeVar(ENTIER);}		
- | <BOOLEEN>	{decl.definirTypeVar(BOOLEAN);}	
+   <ENT> 	{decl.definirTypeVar(ENTIER);tabIdent.setTypeRetour(ENTIER);}		
+ | <BOOLEEN>	{decl.definirTypeVar(BOOLEAN);tabIdent.setTypeRetour(BOOLEAN);}	
 }
 /*
  * Syntaxe des instructions.

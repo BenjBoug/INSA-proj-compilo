@@ -57,6 +57,7 @@ public class Declaration implements Constantes {
 		this.type=type;
 	}
 	
+	
 	public void ajoutVariable(String ident)
 	{
 		if (!tabIdent.existeIdent(ident))
