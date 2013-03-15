@@ -158,6 +158,26 @@ public class YVM implements Constantes {
 		Ecriture.ecrireStringln(o, "aLaLigne");
 	}
 
+	public void ouvreBloc(int taille) {
+		Ecriture.ecrireStringln(o, "ouvbloc " +taille);
+	}
+	
+	public void fermeBloc(int taille) {
+		Ecriture.ecrireStringln(o, "fermebloc " +taille);
+	}
+	
+	public void ireturn(int offset) {
+		Ecriture.ecrireStringln(o, "ireturn " +offset);
+	}
+	
+	public void reserveRetour() {
+		Ecriture.ecrireStringln(o, "reserveRetour");
+	}
+	
+	public void call(String nom) {
+		Ecriture.ecrireStringln(o, "call " +nom);
+	}
+	
 	public void operation(int op) {
 		switch (op)
 		{
