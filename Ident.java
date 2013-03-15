@@ -5,6 +5,7 @@ public abstract class Ident implements Constantes {
 	private String nom;
 	final static int VAR = 0;
 	final static int CONST = 1;
+	final static int FONC = 2;
 
 	public Ident(int type, String nom) {
 		this.type = type;
@@ -28,7 +29,7 @@ public abstract class Ident implements Constantes {
 	}
 
 	public String toString() {
-		return "Type : " + getVarOrConst() + "Nom : " + getNom() + "Valeur : " + getValeur() ; 
+		return "Type : " + type + " Nom : " + getNom() + " Valeur : " + getValeur()+"\n" ; 
 	}
 	public abstract int getValeur();
 	

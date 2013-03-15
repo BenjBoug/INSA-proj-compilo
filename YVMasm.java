@@ -1,5 +1,3 @@
-
-
 public class YVMasm extends YVM {
 	private int cmptChaine = 0;
 
@@ -277,6 +275,40 @@ public class YVMasm extends YVM {
 	{	
 		Ecriture.ecrireStringln(o, "jmp "+conditions.getEtiquetteFin());
 		Ecriture.ecrireStringln(o, conditions.getEtiquetteSinon()+ ":");
+	}
+	
+	public void ouvreBloc(int taille) {
+		Ecriture.ecrireString(o,"; ");
+		super.ouvreBloc(taille);
+		Ecriture.ecrireStringln(o, "enter " +taille + ",0");
+	}
+	
+	public void fermeBloc(int taille) {
+		Ecriture.ecrireString(o,"; ");
+		super.fermeBloc(taille);
+		Ecriture.ecrireStringln(o, "leave ");
+		Ecriture.ecrireStringln(o, "ret " + taille);
+	}
+	
+	public void ireturn(int offset) {
+		Ecriture.ecrireString(o,"; ");
+		super.ireturn(offset);
+		Ecriture.ecrireStringln(o, "pop ax");
+		String signe = "";
+		if (offset>=0) signe = "+";
+		Ecriture.ecrireStringln(o, "mov [bp" + signe + offset + "],ax");
+	}
+	
+	public void reserveRetour() {
+		Ecriture.ecrireString(o,"; ");
+		super.reserveRetour();
+		Ecriture.ecrireStringln(o, "sub sp,2");
+	}
+	
+	public void call(String nom) {
+		Ecriture.ecrireString(o,"; ");
+		super.reserveRetour();
+		Ecriture.ecrireStringln(o, "call " +nom);
 	}
 
 }

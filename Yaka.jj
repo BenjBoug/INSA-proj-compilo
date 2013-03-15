@@ -150,7 +150,7 @@ void analyse() : {}
    (declFonction())*	
    <PRINCIPAL>
    bloc()
-   <FPRINCIPAL>
+   <FPRINCIPAL>{tabIdent.ecrireDebug();tabIdent.videLocaux();}
    <FPROGRAMME>
    {yvm.queue();}
    
@@ -166,7 +166,7 @@ void declFonction() : {}
 {
 	type() <FONCTION> <ident> {tabIdent.ajouteFonction(YakaTokenManager.identLu);} paramForms()
 	bloc()
-	<FFONCTION> {tabIdent.videLocaux();}
+	<FFONCTION> {tabIdent.ecrireDebug();tabIdent.videLocaux();}
 }
 
 void paramForms() : {}
@@ -183,7 +183,7 @@ void paramForms() : {}
 
 void paramForm() : {}
 {
-	type() <ident> {tabIdent.ajoutParam(YakaTokenManager.identLu);}
+	type() <ident> {System.out.println(tabIdent.typeRetour);tabIdent.ajoutParam(YakaTokenManager.identLu);}
 }
 
 void declConst() : {}
@@ -351,12 +351,15 @@ void valeur () : {}
   } 		
  | <ident> 
 	 {
-		 expr.empilerIdent(YakaTokenManager.identLu);
 		 Ident i = tabIdent.chercheIdent(YakaTokenManager.identLu);
 		 if (i.getVarOrConst() == Ident.CONST) {
 		 	yvm.iconst(i.getValeur());
-		 } else {
+		 	expr.empilerIdent(YakaTokenManager.identLu);
+		 } else if (i.getVarOrConst() == Ident.VAR) {
 		 	yvm.iload(i.getValeur());
+		 	expr.empilerIdent(YakaTokenManager.identLu);
+		 }else if (i.getVarOrConst() == Ident.FONC) {
+		 	//fonc YVM
 		 }
 		 
 	 } 	
