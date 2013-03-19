@@ -3,6 +3,7 @@ import java.util.List;
 public class IdFonc extends Ident {
 	
 	List<Integer> listeParams;
+	
 	public IdFonc(String nom, int typeRetour) {
 		super(typeRetour,nom);
 		listeParams= new ArrayList<Integer>();
@@ -17,6 +18,11 @@ public class IdFonc extends Ident {
 	public List<Integer> getListeParams() {
 		return listeParams;
 	}
+	
+	public int getParam(int i)
+	{
+		return listeParams.get(i);
+	}
 
 
 	public void setListeParams(List<Integer> listeParams) {
@@ -25,7 +31,7 @@ public class IdFonc extends Ident {
 	
 	public String toString()
 	{
-		String tmp = " FONCTION resultat : "+getType()+ " param: ";
+		String tmp = getNom()+" FONCTION resultat : "+getType()+ " param: ";
 		for(Integer e : listeParams)
 		{
 			tmp+= e+" ";

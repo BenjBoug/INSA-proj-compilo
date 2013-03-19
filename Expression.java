@@ -5,6 +5,7 @@ public class Expression implements Constantes {
 	private TabIdent tabIdent;
 	private Stack<Integer> types = new Stack<Integer>();
 	private Stack<Integer> operateur = new Stack<Integer>();
+	private String nomFoncActuel;
 	
 	private  final int[][] tabOpe = {{ENTIER,	ERROR,		ERROR	},
 								     {BOOLEAN,	ERROR,		ERROR	},
@@ -46,19 +47,19 @@ public class Expression implements Constantes {
 		return operateur.peek();
 	}
 	
-	public void controleAffectation(String ident)
+	public void controleAffectation(String ident, Token tok)
 	{
 		if (tabIdent.existeIdent(ident))
 		{
 			Ident id = tabIdent.chercheIdent(ident);
 			if (id.getType()!=types.peek())
 			{
-				System.out.println("Erreur: le type de la partie droite n'est pas le meme que la partie gauche.");
+				System.out.println("Erreur: le type de la partie droite n'est pas le meme que la partie gauche "+id.getNom()+" à la ligne "+tok.beginLine);
 			}
 		}
 		else
 		{
-			System.out.println("Erreur: l'identifiant n'existe pas.");
+			System.out.println("Erreur: l'identifiant n'existe pas à la ligne "+tok.beginLine);
 		}
 		
 	}
@@ -162,6 +163,25 @@ public class Expression implements Constantes {
 			System.out.println("Erreur: l'expression n'est pas booléenne.");			
 		}
 	}
-
-
+	
+	public void affichePile(Token token)
+	{
+		System.out.println(token);
+		System.out.println(types);
+	}
+	
+	public void clear()
+	{
+		types.clear();
+		operateur.clear();
+	}
+	
+	public void testExpr(int type)
+	{
+		if (types.peek() != type)
+		{
+			System.out.println("Erreur: l'expression n'a pas le bon type.");			
+		}
+	}
+	
 }

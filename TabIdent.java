@@ -7,9 +7,6 @@ public class TabIdent {
 	private HashMap<String, IdFonc> globaux;
 	private HashMap<String, Ident> locaux;
 	private int offset = 0;
-	private int offsetParam = 2;
-	public int typeRetour;
-	private String nomFoncActuel;
 	
 	public TabIdent(){
 		globaux = new HashMap<String, IdFonc>();
@@ -26,6 +23,11 @@ public class TabIdent {
 		else
 			return globaux.get(clef);
 	}
+	
+	public IdFonc chercheFonction(String nom)
+	{
+		return globaux.get(nom);
+	}
 
 	public boolean existeIdent(String clef) {
 		return locaux.containsKey(clef);
@@ -35,6 +37,11 @@ public class TabIdent {
 		offset -= 2;
 		id.setOffset(offset);
 		locaux.put(clef, id);
+	}
+	
+	public void rangeFonction(String clef, IdFonc fonc)
+	{
+		globaux.put(clef,fonc);
 	}
 	
 	public int nombreVariable() {
@@ -57,30 +64,11 @@ public class TabIdent {
 		
 		return chercheIdent(nom).getValeur();
 	}
-	
-	public void ajouteFonction(String nom)
-	{
-		globaux.put(nom, new IdFonc(nom,typeRetour));
-		nomFoncActuel=nom;
-	}
-	
-	public void ajoutParam(String param)
-	{
-		globaux.get(nomFoncActuel).ajoutParam(typeRetour);
-		offsetParam+=2;
-		locaux.put(param, new IdVar(typeRetour,param,offsetParam));
-	}
-	
-	public void setTypeRetour(int type)
-	{
-		typeRetour=type;
-	}
+		
 	
 	public void videLocaux()
 	{
 		locaux.clear();
-		offsetParam=2;
-		offset=0;
 	}
 	
 	public IdFonc chercheIdentFonction(String nom)
@@ -92,4 +80,6 @@ public class TabIdent {
 	{
 		System.out.println(globaux + " \n"+locaux);
 	}
+	
+	
 }
