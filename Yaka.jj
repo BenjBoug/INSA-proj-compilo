@@ -172,7 +172,9 @@ void declFonction() : {}
 	{yvm.ouvreBloc(tabIdent.nombreVariable()*2);}
 	bloc()
 	<FFONCTION> {fonc.calculerOffsetParam();
-	tabIdent.videLocaux();}
+	tabIdent.videLocaux();
+	fonc.depilerFonction();}
+
 }
 
 void paramForms() : {}
@@ -249,7 +251,7 @@ void type() :{}
  */
 void suiteInstr() : {}
 {
-	instruction()	(";"	  
+	instruction()	(";" {expr.clear();}	  
 	  (instruction())?	)*
 }
 
@@ -365,7 +367,7 @@ void valeur () : {}
 		 	yvm.iload(i.getValeur());
 		 	expr.empilerIdent(YakaTokenManager.identLu);
 		 }else if (i.getVarOrConst() == Ident.FONC) {
-		 	fonc.empilerTypeFonction(YakaTokenManager.identLu);
+		 	fonc.empilerFonction(YakaTokenManager.identLu);
 		 }
 		 
 	 } 	
@@ -385,6 +387,7 @@ void valeur () : {}
 void argumentsFonction() : {int cmp=0;}
 {
 	"(" (expression() {fonc.testArgumentsFonction(cmp++);} ("," expression(){fonc.testArgumentsFonction(cmp++);})*)? ")"
+	{fonc.depilerFonction(); }
 }
 
 void opRel() : {}

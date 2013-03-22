@@ -113,6 +113,7 @@ public class Yaka implements Constantes, YakaConstants {
     jj_consume_token(FFONCTION);
                      fonc.calculerOffsetParam();
         tabIdent.videLocaux();
+        fonc.depilerFonction();
   }
 
   static final public void paramForms() throws ParseException {
@@ -258,6 +259,7 @@ public class Yaka implements Constantes, YakaConstants {
         break label_7;
       }
       jj_consume_token(43);
+              expr.clear();
       switch ((jj_ntk==-1)?jj_ntk():jj_ntk) {
       case SI:
       case RETOURNE:
@@ -549,7 +551,7 @@ public class Yaka implements Constantes, YakaConstants {
                         yvm.iload(i.getValeur());
                         expr.empilerIdent(YakaTokenManager.identLu);
                  }else if (i.getVarOrConst() == Ident.FONC) {
-                        fonc.empilerTypeFonction(YakaTokenManager.identLu);
+                        fonc.empilerFonction(YakaTokenManager.identLu);
                  }
       switch ((jj_ntk==-1)?jj_ntk():jj_ntk) {
       case 40:
@@ -610,6 +612,7 @@ public class Yaka implements Constantes, YakaConstants {
       ;
     }
     jj_consume_token(42);
+         fonc.depilerFonction();
   }
 
   static final public void opRel() throws ParseException {
