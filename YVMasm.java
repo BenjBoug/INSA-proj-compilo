@@ -310,5 +310,11 @@ public class YVMasm extends YVM {
 		super.reserveRetour();
 		Ecriture.ecrireStringln(o, "call " +nom);
 	}
+	
+	public void nomFonc(String nom) {
+		Ecriture.ecrireString(o,"; ");
+		super.nomFonc(nom);
+		Ecriture.ecrireStringln(o, nom+":");
+	}
 
 }

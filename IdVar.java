@@ -28,4 +28,10 @@ public class IdVar extends Ident {
 		setValeur(offset);
 	}
 
+	@Override
+	public void calculerOffset(int taille) {
+		// TODO Auto-generated method stub
+		
+	}
+
 }

@@ -6,6 +6,8 @@ public abstract class Ident implements Constantes {
 	final static int VAR = 0;
 	final static int CONST = 1;
 	final static int FONC = 2;
+	final static int PARAM = 3;
+	
 
 	public Ident(int type, String nom) {
 		this.type = type;
@@ -38,4 +40,6 @@ public abstract class Ident implements Constantes {
 	public abstract int getVarOrConst();
 	
 	public abstract void setOffset(int o);
+	
+	public abstract void calculerOffset(int taille);
 }

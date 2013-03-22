@@ -1,4 +1,5 @@
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 
@@ -6,7 +7,7 @@ public class Fonctions {
 	
 	TabIdent tabIdent;
 	Expression expr;	
-	private int offsetParam = 2;
+	private int rangParam = 1;
 	public int typeRetour;
 	private String nomFoncActuel;
 	
@@ -26,7 +27,7 @@ public class Fonctions {
 	{
 		if (expr.getSommetTypes() != getFoncActuel().getType())
 		{
-			System.out.println("Erreur: la valeur de retour incorrecte � la ligne "+tok.beginLine);			
+			System.out.println("Erreur: la valeur de retour incorrecte � la ligne "+tok.beginLine);			
 		}
 		
 	}
@@ -51,13 +52,20 @@ public class Fonctions {
 	{
 		tabIdent.rangeFonction(nom, new IdFonc(nom,typeRetour));
 		nomFoncActuel=nom;
-		offsetParam=2;
+		rangParam=1;
 	}
 	
 	public void ajoutParam(String param)
 	{
 		tabIdent.chercheFonction(nomFoncActuel).ajoutParam(typeRetour);
-		offsetParam+=2;
-		tabIdent.rangeIdent(param, new IdVar(typeRetour,param,offsetParam));
+		rangParam++;
+		tabIdent.rangeIdent(param, new IdParam(typeRetour,param,rangParam));
+	}
+	
+	// Une fois que tous les rans ont été renseignés, on calcule leur offset
+	// (voir page 23 pour les détails)
+	public void calculerOffsetParam() {
+		int tailleParametres = tabIdent.nombreParametresFonction(nomFoncActuel);
+		tabIdent.calculerOffsetParam(tailleParametres);
 	}
 }

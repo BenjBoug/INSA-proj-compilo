@@ -28,6 +28,11 @@ public class TabIdent {
 	{
 		return globaux.get(nom);
 	}
+	
+	public int nombreParametresFonction(String nom) {
+		return chercheFonction(nom).getListeParams().size(); 
+		
+	}
 
 	public boolean existeIdent(String clef) {
 		return locaux.containsKey(clef);
@@ -39,9 +44,17 @@ public class TabIdent {
 		locaux.put(clef, id);
 	}
 	
+	
 	public void rangeFonction(String clef, IdFonc fonc)
 	{
 		globaux.put(clef,fonc);
+	}
+	
+	public void calculerOffsetParam(int taille) {
+		Iterator<Ident> i = locaux.values().iterator();
+		while (i.hasNext()) {
+			i.next().calculerOffset(taille);
+		}
 	}
 	
 	public int nombreVariable() {

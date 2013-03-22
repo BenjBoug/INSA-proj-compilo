@@ -22,4 +22,10 @@ public class IdConst extends Ident {
 	public void setOffset(int offset) {
 	}
 
+	@Override
+	public void calculerOffset(int taille) {
+		// TODO Auto-generated method stub
+		
+	}
+
 }

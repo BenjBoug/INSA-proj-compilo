@@ -66,4 +66,13 @@ public class IdFonc extends Ident {
 		// TODO Auto-generated method stub
 		
 	}
+
+
+	@Override
+	public void calculerOffset(int taille) {
+		// TODO Auto-generated method stub
+		
+	}
+	
+	
 }
