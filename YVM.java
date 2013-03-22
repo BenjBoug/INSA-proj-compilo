@@ -178,6 +178,10 @@ public class YVM implements Constantes {
 		Ecriture.ecrireStringln(o, "call " +nom);
 	}
 	
+	public void nomFonc(String nom) {
+		Ecriture.ecrireStringln(o, nom+":");
+	}
+	
 	public void operation(int op) {
 		switch (op)
 		{

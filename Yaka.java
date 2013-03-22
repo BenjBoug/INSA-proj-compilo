@@ -106,10 +106,14 @@ public class Yaka implements Constantes, YakaConstants {
     jj_consume_token(FONCTION);
     jj_consume_token(ident);
                                    fonc.ajouteFonction(YakaTokenManager.identLu);
+        yvm.nomFonc(YakaTokenManager.identLu);
     paramForms();
+         yvm.ouvreBloc(tabIdent.nombreVariable()*2);
     bloc();
     jj_consume_token(FFONCTION);
-                     tabIdent.videLocaux(); fonc.depilerFonction();
+                     fonc.calculerOffsetParam();
+        tabIdent.videLocaux();
+        fonc.depilerFonction();
   }
 
   static final public void paramForms() throws ParseException {

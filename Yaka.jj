@@ -167,9 +167,14 @@ void bloc() : {}{
 
 void declFonction() : {}
 {
-	type() <FONCTION> <ident> {fonc.ajouteFonction(YakaTokenManager.identLu);} paramForms()
+	type() <FONCTION> <ident> {fonc.ajouteFonction(YakaTokenManager.identLu); 
+	yvm.nomFonc(YakaTokenManager.identLu);} paramForms()
+	{yvm.ouvreBloc(tabIdent.nombreVariable()*2);}
 	bloc()
-	<FFONCTION> {tabIdent.videLocaux(); fonc.depilerFonction();}
+	<FFONCTION> {fonc.calculerOffsetParam();
+	tabIdent.videLocaux();
+	fonc.depilerFonction();}
+
 }
 
 void paramForms() : {}

@@ -1,5 +1,3 @@
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Stack;
 
 
@@ -7,7 +5,7 @@ public class Fonctions {
 	
 	TabIdent tabIdent;
 	Expression expr;	
-	private int offsetParam = 2;
+	private int rangParam = 1;
 	public int typeRetour;
 	private Stack<IdFonc> fonctions = new Stack<IdFonc>();
 	
@@ -36,14 +34,14 @@ public class Fonctions {
 	{
 		if (expr.getSommetTypes() != foncActuelle().getType())
 		{
-			System.out.println("Erreur: la valeur de retour incorrecte a la ligne "+tok.beginLine);			
+			System.out.println("Erreur: la valeur de retour incorrecte a la ligne "+tok.beginLine);	
 		}
 		
 	}
 	public void testArgumentsFonction(int id)
 	{
 		IdFonc fonc = tabIdent.chercheFonction(fonctions.peek().getNom());
-		expr.testExpr(fonc.getParam(id));//erreur outofboundexception, a voir !!!!!!!!!!!!
+		expr.testExpr(fonc.getParam(id));
 	}
 	
 
@@ -57,14 +55,25 @@ public class Fonctions {
 	public void ajouteFonction(String nom)
 	{
 		tabIdent.rangeFonction(nom, new IdFonc(nom,typeRetour));
-		offsetParam = 2;
+		rangParam=1;
 		fonctions.push(tabIdent.chercheFonction(nom));
 	}
 	
 	public void ajoutParam(String param)
 	{
-		tabIdent.chercheFonction(fonctions.peek().getNom()).ajoutParam(typeRetour);
-		offsetParam+=2;
-		tabIdent.rangeIdent(param, new IdVar(typeRetour,param,offsetParam));
+		tabIdent.chercheFonction(getNomFoncActuel()).ajoutParam(typeRetour);
+		rangParam++;
+		tabIdent.rangeIdent(param, new IdParam(typeRetour,param,rangParam));
+	}
+	
+	// Une fois que tous les rans ont été renseignés, on calcule leur offset
+	// (voir page 23 pour les détails)
+	public void calculerOffsetParam() {
+		int tailleParametres = tabIdent.nombreParametresFonction(getNomFoncActuel());
+		tabIdent.calculerOffsetParam(tailleParametres);
+	}
+	
+	public String getNomFoncActuel() {
+		return fonctions.peek().getNom();
 	}
 }
