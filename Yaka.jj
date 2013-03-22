@@ -186,7 +186,7 @@ void paramForms() : {}
 
 void paramForm() : {}
 {
-	type() <ident> {fonc.ajoutParam(YakaTokenManager.identLu);}
+	type() <ident> {fonc.ajoutParam(YakaTokenManager.identLu); expr.affichePile(token); }
 }
 
 void declConst() : {}

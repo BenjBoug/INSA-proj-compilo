@@ -142,7 +142,7 @@ public class Yaka implements Constantes, YakaConstants {
   static final public void paramForm() throws ParseException {
     type();
     jj_consume_token(ident);
-                        fonc.ajoutParam(YakaTokenManager.identLu);
+                        fonc.ajoutParam(YakaTokenManager.identLu); expr.affichePile(token);
   }
 
   static final public void declConst() throws ParseException {
