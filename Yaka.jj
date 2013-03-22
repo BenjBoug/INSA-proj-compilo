@@ -362,12 +362,12 @@ void valeur () : {}
 		 	yvm.iload(i.getValeur());
 		 	expr.empilerIdent(YakaTokenManager.identLu);
 		 }else if (i.getVarOrConst() == Ident.FONC) {
-		 	fonc.empilerTypeFonction(YakaTokenManager.identLu);
+		 	fonc.empilerFonction(YakaTokenManager.identLu);
 		 }
 		 
 	 } 	
  
- 	(argumentsFonction())?
+ 	(argumentsFonction())? {fonc.depilerFonction(); }
  	
  | <TRUE> {
  expr.empilerBool(VRAI);

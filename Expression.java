@@ -5,7 +5,7 @@ public class Expression implements Constantes {
 	private TabIdent tabIdent;
 	private Stack<Integer> types = new Stack<Integer>();
 	private Stack<Integer> operateur = new Stack<Integer>();
-	private String nomFoncActuel;
+	// private Stack<IdFonc> fonc = new Stack<IdFonc>();
 	
 	private  final int[][] tabOpe = {{ENTIER,	ERROR,		ERROR	},
 								     {BOOLEAN,	ERROR,		ERROR	},
@@ -54,12 +54,12 @@ public class Expression implements Constantes {
 			Ident id = tabIdent.chercheIdent(ident);
 			if (id.getType()!=types.peek())
 			{
-				System.out.println("Erreur: le type de la partie droite n'est pas le meme que la partie gauche "+id.getNom()+" à la ligne "+tok.beginLine);
+				System.out.println("Erreur: le type de la partie droite n'est pas le meme que la partie gauche "+id.getNom()+" a la ligne "+tok.beginLine);
 			}
 		}
 		else
 		{
-			System.out.println("Erreur: l'identifiant n'existe pas à la ligne "+tok.beginLine);
+			System.out.println("Erreur: l'identifiant n'existe pas a la ligne "+tok.beginLine);
 		}
 		
 	}
@@ -160,7 +160,7 @@ public class Expression implements Constantes {
 	{
 		if (types.peek() != BOOLEAN)
 		{
-			System.out.println("Erreur: l'expression n'est pas booléenne.");			
+			System.out.println("Erreur: l'expression n'est pas booleenne.");			
 		}
 	}
 	

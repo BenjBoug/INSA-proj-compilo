@@ -1,5 +1,6 @@
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Stack;
 
 
 public class Fonctions {
@@ -8,7 +9,7 @@ public class Fonctions {
 	Expression expr;	
 	private int offsetParam = 2;
 	public int typeRetour;
-	private String nomFoncActuel;
+	private Stack<IdFonc> fonctions = new Stack<IdFonc>();
 	
 	public Fonctions(TabIdent tabIdent, Expression expr) {
 		super();
@@ -16,23 +17,32 @@ public class Fonctions {
 		this.expr = expr;
 	}
 	
-
-	public void empilerTypeFonction(String nom){
-		IdFonc fonc = tabIdent.chercheIdentFonction(nom);
-		expr.empilerType(fonc.getType());
+	public IdFonc foncActuelle(){
+		return fonctions.peek();
+	}	
+	
+	public void empilerFonction(String nom){
+		IdFonc fonc = tabIdent.chercheFonction(nom);
+		fonctions.push(fonc);
 	}
+	
+	public void depilerFonction(){
+		fonctions.pop();
+	}
+	
+
 
 	public void testValeurRetour(Token tok)
 	{
-		if (expr.getSommetTypes() != getFoncActuel().getType())
+		if (expr.getSommetTypes() != foncActuelle().getType())
 		{
-			System.out.println("Erreur: la valeur de retour incorrecte à la ligne "+tok.beginLine);			
+			System.out.println("Erreur: la valeur de retour incorrecte a la ligne "+tok.beginLine);			
 		}
 		
 	}
 	public void testArgumentsFonction(int id)
 	{
-		IdFonc fonc = tabIdent.chercheFonction(nomFoncActuel);
+		IdFonc fonc = tabIdent.chercheFonction(fonctions.peek().getNom());
 		expr.testExpr(fonc.getParam(id));//erreur outofboundexception, a voir !!!!!!!!!!!!
 	}
 	
@@ -42,21 +52,18 @@ public class Fonctions {
 		typeRetour=type;
 	}
 	
-	public IdFonc getFoncActuel()
-	{
-		return tabIdent.chercheFonction(nomFoncActuel);
-	}
+	
 	
 	public void ajouteFonction(String nom)
 	{
 		tabIdent.rangeFonction(nom, new IdFonc(nom,typeRetour));
-		nomFoncActuel=nom;
-		offsetParam=2;
+		offsetParam = 2;
+		fonctions.push(tabIdent.chercheFonction(nom));
 	}
 	
 	public void ajoutParam(String param)
 	{
-		tabIdent.chercheFonction(nomFoncActuel).ajoutParam(typeRetour);
+		tabIdent.chercheFonction(fonctions.peek().getNom()).ajoutParam(typeRetour);
 		offsetParam+=2;
 		tabIdent.rangeIdent(param, new IdVar(typeRetour,param,offsetParam));
 	}

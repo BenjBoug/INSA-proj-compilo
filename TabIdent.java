@@ -71,11 +71,6 @@ public class TabIdent {
 		locaux.clear();
 	}
 	
-	public IdFonc chercheIdentFonction(String nom)
-	{
-		return globaux.get(nom);
-	}
-	
 	public void ecrireDebug()
 	{
 		System.out.println(globaux + " \n"+locaux);
