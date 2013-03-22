@@ -22,12 +22,16 @@ public class Fonctions {
 	}	
 	
 	public void empilerFonction(String nom){
+		System.out.println("Avant l'emp"+fonctions+"\n");
 		IdFonc fonc = tabIdent.chercheFonction(nom);
 		fonctions.push(fonc);
+		System.out.println("Apres l'emp"+fonctions+"\n");
 	}
 	
 	public void depilerFonction(){
+		System.out.println("Avant le dep"+fonctions+"\n");
 		fonctions.pop();
+		System.out.println("Apres le dep"+fonctions+"\n");
 	}
 	
 
