@@ -547,7 +547,7 @@ public class Yaka implements Constantes, YakaConstants {
                  if (i.getVarOrConst() == Ident.CONST) {
                         yvm.iconst(i.getValeur());
                         expr.empilerIdent(YakaTokenManager.identLu);
-                 } else if (i.getVarOrConst() == Ident.VAR) {
+                 } else if (i.getVarOrConst() == Ident.VAR || i.getVarOrConst() == Ident.PARAM) {
                         yvm.iload(i.getValeur());
                         expr.empilerIdent(YakaTokenManager.identLu);
                  }else if (i.getVarOrConst() == Ident.FONC) {
