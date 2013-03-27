@@ -54,18 +54,18 @@ public class Expression implements Constantes {
 			Ident id = tabIdent.chercheIdent(ident);
 			if (id.getType()!=types.peek())
 			{
-				System.out.println("Erreur: le type de la partie droite n'est pas le meme que la partie gauche "+id.getNom()+" a la ligne "+tok.beginLine);
+				System.out.println("Erreur (l."+tok.beginLine+"): le type de la partie droite n'est pas le meme que la partie gauche "+id.getNom()+" a la ligne "+tok.beginLine);
 			}
 		}
 		else
 		{
-			System.out.println("Erreur: l'identifiant n'existe pas a la ligne "+tok.beginLine);
+			System.out.println("Erreur (l."+tok.beginLine+"): l'identifiant n'existe pas a la ligne "+tok.beginLine);
 		}
 		
 	}
 	
 	
-	public boolean operation()
+	public boolean operation(Token tok)
 	{
 		int ope = operateur.pop();
 		if (ope==NEG || ope == NOT)
@@ -85,7 +85,7 @@ public class Expression implements Constantes {
 					case MUL:
 					case DIV:
 						if (tabOpe[0][type1]==ERROR)
-							System.out.println("Erreur: l'expression n'est pas correcte.");
+							System.out.println("Erreur (l."+tok.beginLine+"): l'expression n'est pas correcte.");
 						types.push(tabOpe[0][type1]);
 						break;
 						
@@ -94,21 +94,21 @@ public class Expression implements Constantes {
 					case INFEG:
 					case SUPEG:
 						if (tabOpe[1][type1]==ERROR)
-							System.out.println("Erreur: l'expression n'est pas correcte.");
+							System.out.println("Erreur (l."+tok.beginLine+"): l'expression n'est pas correcte.");
 						types.push(tabOpe[1][type1]);
 						break;
 		
 					case EGAL:
 					case NEGAL:
 						if (tabOpe[2][type1]==ERROR)
-							System.out.println("Erreur: l'expression n'est pas correcte.");
+							System.out.println("Erreur (l."+tok.beginLine+"): l'expression n'est pas correcte.");
 						types.push(tabOpe[2][type1]);				
 						break;
 						
 					case ET:
 					case OU:
 						if (tabOpe[3][type1]==ERROR)
-							System.out.println("Erreur: l'expression n'est pas correcte.");
+							System.out.println("Erreur (l."+tok.beginLine+"): l'expression n'est pas correcte.");
 						types.push(tabOpe[3][type1]);
 						
 						break;
@@ -117,7 +117,7 @@ public class Expression implements Constantes {
 			}
 			else
 			{
-				System.out.println("Erreur: l'expression n'est pas correcte.");
+				System.out.println("Erreur (l."+tok.beginLine+"): l'expression n'est pas correcte.");
 				types.push(ERROR);
 				return false;
 			}
@@ -134,7 +134,7 @@ public class Expression implements Constantes {
 		empilerType(BOOLEAN);
 	}
 	
-	public void empilerIdent(String nomIdent)
+	public void empilerIdent(String nomIdent,Token tok)
 	{
 		if (tabIdent.existeIdent(nomIdent))
 		{
@@ -143,7 +143,7 @@ public class Expression implements Constantes {
 		}
 		else
 		{
-			System.out.println("Erreur: la variable "+nomIdent+" n'existe pas.");
+			System.out.println("Erreur (l."+tok.beginLine+"): la variable "+nomIdent+" n'existe pas.");
 			empilerType(ERROR);
 		}
 	}
@@ -156,17 +156,17 @@ public class Expression implements Constantes {
 		this.tabIdent = tabIdent;
 	}
 	
-	public void testExprBool()
+	public void testExprBool(Token tok)
 	{
 		if (types.peek() != BOOLEAN)
 		{
-			System.out.println("Erreur: l'expression n'est pas booleenne.");			
+			System.out.println("Erreur (l."+tok.beginLine+"): l'expression n'est pas booleenne.");			
 		}
 	}
 	
 	public void affichePile(Token token)
 	{
-		System.out.println(token);
+		System.out.println("token: "+token+" l"+token.beginLine);
 		System.out.println(types);
 	}
 	
@@ -176,11 +176,11 @@ public class Expression implements Constantes {
 		operateur.clear();
 	}
 	
-	public void testExpr(int type)
+	public void testExpr(int type,Token tok)
 	{
 		if (types.peek() != type)
 		{
-			System.out.println("Erreur: l'expression n'a pas le bon type.");			
+			System.out.println("Erreur (l."+tok.beginLine+"): l'expression n'a pas le bon type.");			
 		}
 	}
 	

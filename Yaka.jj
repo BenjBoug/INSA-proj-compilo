@@ -173,7 +173,8 @@ void declFonction() : {}
 	bloc()
 	<FFONCTION> {fonc.calculerOffsetParam();
 	tabIdent.videLocaux();
-	fonc.depilerFonction();}
+	fonc.depilerFonction();
+	expr.clear();}
 
 }
 
@@ -191,7 +192,7 @@ void paramForms() : {}
 
 void paramForm() : {}
 {
-	type() <ident> {fonc.ajoutParam(YakaTokenManager.identLu); expr.affichePile(token); }
+	type() <ident> {fonc.ajoutParam(YakaTokenManager.identLu);}
 }
 
 void declConst() : {}
@@ -210,19 +211,19 @@ void defConst() : {}
 void valConst() : {String id = YakaTokenManager.identLu;}
 {
   <entier> {
-  decl.ajoutConstEntier(id,YakaTokenManager.entierLu); 
+  decl.ajoutConstEntier(id,YakaTokenManager.entierLu,token); 
   yvm.iconst(YakaTokenManager.entierLu);
   } 		
  | <ident> {
- decl.ajoutConstIdent(id,YakaTokenManager.identLu);
+ decl.ajoutConstIdent(id,YakaTokenManager.identLu,token);
  yvm.iconst(tabIdent.chercheIdent(id).getValeur());
  } 		
  | <TRUE> {
- decl.ajoutConstBool(id,VRAI);
+ decl.ajoutConstBool(id,VRAI,token);
  yvm.iconst(VRAI);
  }		
  | <FALSE> {
- decl.ajoutConstBool(id,FAUX);
+ decl.ajoutConstBool(id,FAUX,token);
  yvm.iconst(FAUX);
  }		
 }
@@ -232,11 +233,11 @@ void declVar() : {}
 {
   <VAR> type()	
   <ident>	{
-  decl.ajoutVariable(YakaTokenManager.identLu);
+  decl.ajoutVariable(YakaTokenManager.identLu,token);
   }	
   ("," 
       <ident> {
-      decl.ajoutVariable(YakaTokenManager.identLu);
+      decl.ajoutVariable(YakaTokenManager.identLu,token);
       }	 
   )* ";"
 }
@@ -284,7 +285,7 @@ void ecriture()  : {}
  * It�ration
  */
 
-void boucle() : {}{	< TANTQUE > {yvm.tantque();} expression() {expr.testExprBool();} < FAIRE > {yvm.iffaux();}  suiteBoucle()
+void boucle() : {}{	< TANTQUE > {yvm.tantque();} expression() {expr.testExprBool(token);} < FAIRE > {yvm.iffaux();}  suiteBoucle()
 }
 void suiteBoucle() : {}
 {
@@ -297,7 +298,7 @@ void suiteBoucle() : {}
 /*\ ATTENTION: conditionnelle a redéfinir, probleme  avec les étiquettes de iffaux quand il y a un bloc sinon   */
 void condition() : {}
 {
-	< SI > {yvm.si();} expression(){expr.testExprBool();} < ALORS >  {yvm.iffaux();} suiteInstr() {yvm.sinon();} suiteCondi()  }
+	< SI > {yvm.si();} expression(){expr.testExprBool(token);} < ALORS >  {yvm.iffaux();} suiteInstr() {yvm.sinon();} suiteCondi()  }
 void suiteCondi() : {}
 {
 	< FSI >  {yvm.fsi();} | sinonCondi()
@@ -316,7 +317,7 @@ void expression() : {}
   simpleExpr() 
   (opRel() 
   simpleExpr() {yvm.operation(expr.getSommetOp());
-  expr.operation();}
+  expr.operation(token);}
   )?
 }
 
@@ -326,7 +327,7 @@ void simpleExpr() : {}
    (opAdd() 
    terme()	{
    yvm.operation(expr.getSommetOp());
-   expr.operation();
+   expr.operation(token);
    }
    )*
 } 
@@ -336,13 +337,13 @@ void terme() : {}
   (opMul() 
   facteur()	{
 	yvm.operation(expr.getSommetOp());
-  expr.operation();
+  expr.operation(token);
     }
   )*
 }
 void facteur() : {}
 {   primaire() 
-  |  opNeg() primaire() {yvm.operation(expr.getSommetOp());expr.operation();} 
+  |  opNeg() primaire() {yvm.operation(expr.getSommetOp());expr.operation(token);} 
 }
 
 void primaire (): {}
@@ -356,19 +357,21 @@ void valeur () : {}
 { <entier> {
   expr.empilerEnt(YakaTokenManager.entierLu); 
   yvm.iconst(YakaTokenManager.entierLu);
+		 expr.affichePile(token);
   } 		
  | <ident> 
 	 {
 		 Ident i = tabIdent.chercheIdent(YakaTokenManager.identLu);
 		 if (i.getVarOrConst() == Ident.CONST) {
 		 	yvm.iconst(i.getValeur());
-		 	expr.empilerIdent(YakaTokenManager.identLu);
 		 } else if (i.getVarOrConst() == Ident.VAR || i.getVarOrConst() == Ident.PARAM) {
 		 	yvm.iload(i.getValeur());
-		 	expr.empilerIdent(YakaTokenManager.identLu);
 		 }else if (i.getVarOrConst() == Ident.FONC) {
 		 	fonc.empilerFonction(YakaTokenManager.identLu);
 		 }
+		 
+		 expr.empilerIdent(YakaTokenManager.identLu,token);
+		 expr.affichePile(token);
 		 
 	 } 	
  	(argumentsFonction())?
@@ -376,17 +379,19 @@ void valeur () : {}
  | <TRUE> {
  expr.empilerBool(VRAI);
  yvm.iconst(VRAI);
+		 expr.affichePile(token);
  }		
  | <FALSE> {
  expr.empilerBool(FAUX);
  yvm.iconst(FAUX);
+		 expr.affichePile(token);
  }	
 }
 
 void argumentsFonction() : {int cmp=0;}
 {
-	"(" (expression() {fonc.testArgumentsFonction(cmp++);} ("," expression(){fonc.testArgumentsFonction(cmp++);})*)? ")"
-	{fonc.depilerFonction(); }
+	"(" (expression() {cmp++;} ("," expression(){cmp++;})*)? ")"
+	{fonc.testTypesArguments(cmp,token);fonc.depilerFonction(); }
 }
 
 void opRel() : {}

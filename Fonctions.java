@@ -34,14 +34,14 @@ public class Fonctions {
 	{
 		if (expr.getSommetTypes() != foncActuelle().getType())
 		{
-			System.out.println("Erreur: la valeur de retour incorrecte a la ligne "+tok.beginLine);	
+			System.out.println("Erreur (l."+tok.beginLine+"): valeur de retour incorrecte");	
 		}
 		
 	}
-	public void testArgumentsFonction(int id)
+	public void testArgumentsFonction(int id,Token tok)
 	{
-		IdFonc fonc = tabIdent.chercheFonction(fonctions.peek().getNom());
-		expr.testExpr(fonc.getParam(id));
+		IdFonc fonc = fonctions.peek();
+		expr.testExpr(fonc.getParam(id).getType(),tok);
 	}
 	
 
@@ -61,9 +61,10 @@ public class Fonctions {
 	
 	public void ajoutParam(String param)
 	{
-		tabIdent.chercheFonction(getNomFoncActuel()).ajoutParam(typeRetour);
 		rangParam++;
-		tabIdent.rangeIdent(param, new IdParam(typeRetour,param,rangParam));
+		IdParam idPar = new IdParam(typeRetour,param,rangParam);
+		fonctions.peek().ajoutParam(idPar);
+		tabIdent.rangeIdent(param, idPar);
 	}
 	
 	// Une fois que tous les rans ont été renseignés, on calcule leur offset
@@ -76,4 +77,43 @@ public class Fonctions {
 	public String getNomFoncActuel() {
 		return fonctions.peek().getNom();
 	}
+	
+	public void testTypesArguments(int nbArg, Token tok)
+	{
+		IdFonc fonc = fonctions.peek();
+		if (nbArg == fonc.getNbParam())
+		{
+			for (int i=fonc.getNbParam()-1;i>=0;i--)
+			{
+				int typeEmpiler = expr.depilerType();
+				int typeArg = fonc.getParam(i).getType();
+				if (typeEmpiler!=typeArg)
+				{
+					System.out.println("Erreur (l."+tok.beginLine+"): le type de l'argument "+(i+1)+" n'a pas le bon type");
+					
+				}
+			}
+			
+		}
+		else
+		{
+			System.out.println("Erreur (l."+tok.beginLine+"): nombre d'argument(s) invalide.");
+		}
+	}
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
