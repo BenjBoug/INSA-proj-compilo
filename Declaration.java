@@ -62,7 +62,7 @@ public class Declaration implements Constantes {
 	{
 		if (!tabIdent.existeIdent(ident))
 		{
-			tabIdent.rangeIdent(ident,new IdVar(type,ident));
+			tabIdent.rangeIdent(ident,new IdVar(type,ident),-2);
 		}
 		else
 		{

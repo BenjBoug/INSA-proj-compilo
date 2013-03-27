@@ -38,9 +38,14 @@ public class TabIdent {
 		return locaux.containsKey(clef);
 	}
 
-	public void rangeIdent(String clef, Ident id) {
-		offset -= 2;
+	
+	public void rangeIdent(String clef, Ident id,int modifOffset) {
+		offset += modifOffset;
 		id.setOffset(offset);
+		locaux.put(clef, id);
+	}
+	
+	public void rangeIdent(String clef, Ident id) {
 		locaux.put(clef, id);
 	}
 	
@@ -82,6 +87,7 @@ public class TabIdent {
 	public void videLocaux()
 	{
 		locaux.clear();
+		offset = 0;
 	}
 	
 	public void ecrireDebug()

@@ -20,7 +20,7 @@ public class YVM implements Constantes {
 	{
 		conditions.nouvelleConditionnelle();
 		structureConditionnelleActuelle = conditions;
-		Ecriture.ecrireStringln(o, conditions.getEtiquetteDebut()+":");
+		//Ecriture.ecrireStringln(o, conditions.getEtiquetteDebut()+":");
 	}
 	
 	public void sinon()
