@@ -275,7 +275,7 @@ void affectation() : {}
 
 void lecture() : {}{	<LIRE> "(" <ident> ")"
 	{
-		System.out.println("ERREUR PAS DE TEST SI VAR EXISTE LECTURE"):	  yvm.lireEnt(tabIdent.valeurIdent(YakaTokenManager.identLu));
+	 System.out.println("ERREUR PAS DE TEST SI VAR EXISTE LECTURE");	  yvm.lireEnt(tabIdent.valeurIdent(YakaTokenManager.identLu));
 	}
 }
 void ecriture()  : {}
@@ -363,7 +363,7 @@ void valeur () : {}
  | <ident> 
 	 {
 		 Ident i = tabIdent.chercheIdent(YakaTokenManager.identLu);
-<<<<<<< HEAD
+
 		 if (i!=null)
 		 {
 		 	switch(i.getVarOrConst())
@@ -387,18 +387,6 @@ void valeur () : {}
 		 {
 		 	expr.empilerType(ERROR);
 		 }
-=======
-		 if (i.getVarOrConst() == Ident.CONST) {
-		 	yvm.iconst(i.getValeur());
-		 } else if (i.getVarOrConst() == Ident.VAR || i.getVarOrConst() == Ident.PARAM) {
-		 	yvm.iload(i.getValeur());
-		 }else if (i.getVarOrConst() == Ident.FONC) {
-		 	fonc.empilerFonction(YakaTokenManager.identLu);
-		 	yvm.reserveRetour();
-		 }
-		 
-		 expr.empilerIdent(YakaTokenManager.identLu,token);
->>>>>>> 79da7118fa7cd288dc516ceea26621c3150a3e3f
 		 
 	 } 	
  	(argumentsFonction())?

@@ -1,3 +1,4 @@
+package compilateur;
 
 
 import java.util.HashMap;
@@ -11,10 +12,6 @@ public class TabIdent {
 	public TabIdent(){
 		globaux = new HashMap<String, IdFonc>();
 		locaux = new HashMap<String, Ident>();
-	}
-
-	public TabIdent(int taille) {
-		globaux = new HashMap<String, IdFonc>(taille);
 	}
 
 	public Ident chercheIdent(String clef) {
@@ -36,6 +33,16 @@ public class TabIdent {
 
 	public boolean existeIdent(String clef) {
 		return locaux.containsKey(clef) | globaux.containsKey(clef);
+	}
+	
+
+	public boolean existeIdentLocal(String clef) {
+		return locaux.containsKey(clef);
+	}
+	
+
+	public boolean existeIdentGlobal(String clef) {
+		return globaux.containsKey(clef);
 	}
 
 	

@@ -1,3 +1,4 @@
+package compilateur;
 import java.io.OutputStream;
 import java.util.Stack;
 

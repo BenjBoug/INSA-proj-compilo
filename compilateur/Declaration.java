@@ -1,3 +1,4 @@
+package compilateur;
 
 public class Declaration implements Constantes {
 	
@@ -100,11 +101,7 @@ public class Declaration implements Constantes {
 	{
 		if (!tabIdent.existeIdent(id))
 		{
-<<<<<<< HEAD
 			tabIdent.rangeIdent(id,new IdVar(type,id));
-=======
-			tabIdent.rangeIdent(ident,new IdVar(type,ident),-2);
->>>>>>> 79da7118fa7cd288dc516ceea26621c3150a3e3f
 		}
 		else
 		{

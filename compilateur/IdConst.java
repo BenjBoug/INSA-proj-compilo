@@ -1,3 +1,4 @@
+package compilateur;
 
 public class IdConst extends Ident {
 	private int valeur;

@@ -1,3 +1,4 @@
+package compilateur;
 import java.util.Stack;
 
 
@@ -60,10 +61,17 @@ public class Fonctions {
 	}
 	
 	public void ajoutParam(String param) {
-		IdParam idPar = new IdParam(typeRetour,param,rangParam);
-		fonctions.peek().ajoutParam(idPar);
-		tabIdent.rangeIdent(param, idPar);
-		rangParam++;
+		if (!tabIdent.existeIdentLocal(param))
+		{
+			IdParam idPar = new IdParam(typeRetour,param,rangParam);
+			fonctions.peek().ajoutParam(idPar);
+			tabIdent.rangeIdent(param, idPar);
+			rangParam++;
+		}
+		else
+		{
+			System.out.println("Erreur: l'argument "+param+" déjà déclaré pour cette fonction");
+		}
 	}
 	
 	// Une fois que tous les rans ont été renseignés, on calcule leur offset
@@ -97,7 +105,6 @@ public class Fonctions {
 					
 				}
 			}
-			
 		}
 		else
 		{

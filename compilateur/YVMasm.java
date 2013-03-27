@@ -1,3 +1,4 @@
+package compilateur;
 public class YVMasm extends YVM {
 	private int cmptChaine = 0;
 

@@ -1,3 +1,4 @@
+package compilateur;
 
 public interface Etiquette {
 

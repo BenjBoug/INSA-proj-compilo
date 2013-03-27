@@ -1,3 +1,4 @@
+package compilateur;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -9,7 +10,6 @@ public class IdFonc extends Ident {
 		super(typeRetour,nom);
 		listeParams= new ArrayList<IdParam>();
 	}
-	
 	
 	void ajoutParam(IdParam param)
 	{

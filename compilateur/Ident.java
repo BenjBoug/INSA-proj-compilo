@@ -1,3 +1,4 @@
+package compilateur;
 
 public abstract class Ident implements Constantes {
 

@@ -1,3 +1,4 @@
+package compilateur;
 
 public class IdParam extends Ident  {
 	private int offset;
@@ -6,8 +7,6 @@ public class IdParam extends Ident  {
 		super(type, nom);
 		offset = rang;
 	}
-
-
 	
 	@Override
 	public int getValeur() {
