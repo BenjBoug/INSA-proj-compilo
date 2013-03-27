@@ -8,7 +8,7 @@ public class Declaration implements Constantes {
 		this.tabIdent = tabIdent;
 		type=ENTIER;
 	}
-	public void ajoutConstEntier(String id, int entier)
+	public void ajoutConstEntier(String id, int entier, Token tok)
 	{
 		if (!tabIdent.existeIdent(id))
 		{
@@ -16,10 +16,10 @@ public class Declaration implements Constantes {
 		}
 		else
 		{
-			System.out.println("Erreur: la constante "+id+" est deja declaree.");
+			System.out.println("Erreur (l."+tok.beginLine+"): la constante "+id+" est deja declaree.");
 		}
 	}
-	public void ajoutConstIdent(String id, String ident)
+	public void ajoutConstIdent(String id, String ident, Token tok)
 	{
 		if (!tabIdent.existeIdent(id))
 		{
@@ -31,15 +31,15 @@ public class Declaration implements Constantes {
 			}
 			else
 			{
-				System.out.println("Erreur: la constante "+ident+" n'est pas declaree.");
+				System.out.println("Erreur (l."+tok.beginLine+"): la constante "+ident+" n'est pas declaree.");
 			}
 		}
 		else
 		{
-			System.out.println("Erreur: la constante "+id+" est deja uilisee.");
+			System.out.println("Erreur (l."+tok.beginLine+"): la constante "+id+" est deja uilisee.");
 		}
 	}
-	public void ajoutConstBool(String id, int val)
+	public void ajoutConstBool(String id, int val, Token tok)
 	{
 		if (!tabIdent.existeIdent(id))
 		{
@@ -47,7 +47,7 @@ public class Declaration implements Constantes {
 		}
 		else
 		{
-			System.out.println("Erreur: la constante "+id+" est deja declaree.");
+			System.out.println("Erreur (l."+tok.beginLine+"): la constante "+id+" est deja declaree.");
 		}
 	}
 	
@@ -58,7 +58,7 @@ public class Declaration implements Constantes {
 	}
 	
 	
-	public void ajoutVariable(String ident)
+	public void ajoutVariable(String ident, Token tok)
 	{
 		if (!tabIdent.existeIdent(ident))
 		{
@@ -66,7 +66,7 @@ public class Declaration implements Constantes {
 		}
 		else
 		{
-			System.out.println("Erreur: la variable "+ident+" est deja declaree.");			
+			System.out.println("Erreur (l."+tok.beginLine+"): la variable "+ident+" est deja declaree.");			
 		}
 	}
 	

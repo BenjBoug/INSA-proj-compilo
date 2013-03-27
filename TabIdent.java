@@ -35,7 +35,7 @@ public class TabIdent {
 	}
 
 	public boolean existeIdent(String clef) {
-		return locaux.containsKey(clef);
+		return locaux.containsKey(clef) | globaux.containsKey(clef);
 	}
 
 	
