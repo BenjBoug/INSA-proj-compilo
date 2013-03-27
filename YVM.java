@@ -33,7 +33,7 @@ public class YVM implements Constantes {
 	{
 		Ecriture.ecrireStringln(o, conditions.getEtiquetteFinAndFinish()+ ":");
 	}
-	
+
 	public void tantque() {
 		iterations.nouvelleIteration();
 		structureConditionnelleActuelle = iterations;

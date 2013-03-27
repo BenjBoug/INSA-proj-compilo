@@ -357,21 +357,33 @@ void valeur () : {}
 { <entier> {
   expr.empilerEnt(YakaTokenManager.entierLu); 
   yvm.iconst(YakaTokenManager.entierLu);
-		 expr.affichePile(token);
   } 		
  | <ident> 
 	 {
 		 Ident i = tabIdent.chercheIdent(YakaTokenManager.identLu);
-		 if (i.getVarOrConst() == Ident.CONST) {
-		 	yvm.iconst(i.getValeur());
-		 } else if (i.getVarOrConst() == Ident.VAR || i.getVarOrConst() == Ident.PARAM) {
-		 	yvm.iload(i.getValeur());
-		 }else if (i.getVarOrConst() == Ident.FONC) {
-		 	fonc.empilerFonction(YakaTokenManager.identLu);
+		 if (i!=null)
+		 {
+		 	switch(i.getVarOrConst())
+		 	{
+		 		case Ident.CONST:
+			 		yvm.iconst(i.getValeur());		 		
+		 		break;
+		 		
+		 		case Ident.VAR:
+		 		case Ident.PARAM:
+			 		yvm.iload(i.getValeur());		 		
+		 		break;
+		 		case Ident.FONC:
+			 		fonc.empilerFonction(YakaTokenManager.identLu);
+		 		break;
+		 	
+		 	}		 
+			 expr.empilerIdent(YakaTokenManager.identLu,token);
 		 }
-		 
-		 expr.empilerIdent(YakaTokenManager.identLu,token);
-		 expr.affichePile(token);
+		 else
+		 {
+		 	expr.empilerType(ERROR);
+		 }
 		 
 	 } 	
  	(argumentsFonction())?
@@ -379,12 +391,10 @@ void valeur () : {}
  | <TRUE> {
  expr.empilerBool(VRAI);
  yvm.iconst(VRAI);
-		 expr.affichePile(token);
  }		
  | <FALSE> {
  expr.empilerBool(FAUX);
  yvm.iconst(FAUX);
-		 expr.affichePile(token);
  }	
 }
 

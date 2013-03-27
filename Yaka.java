@@ -541,21 +541,33 @@ public class Yaka implements Constantes, YakaConstants {
       jj_consume_token(entier);
   expr.empilerEnt(YakaTokenManager.entierLu);
   yvm.iconst(YakaTokenManager.entierLu);
-                 expr.affichePile(token);
       break;
     case ident:
       jj_consume_token(ident);
                  Ident i = tabIdent.chercheIdent(YakaTokenManager.identLu);
-                 if (i.getVarOrConst() == Ident.CONST) {
-                        yvm.iconst(i.getValeur());
-                 } else if (i.getVarOrConst() == Ident.VAR || i.getVarOrConst() == Ident.PARAM) {
-                        yvm.iload(i.getValeur());
-                 }else if (i.getVarOrConst() == Ident.FONC) {
-                        fonc.empilerFonction(YakaTokenManager.identLu);
-                 }
+                 if (i!=null)
+                 {
+                        switch(i.getVarOrConst())
+                        {
+                                case Ident.CONST:
+                                        yvm.iconst(i.getValeur());
+                                break;
 
-                 expr.empilerIdent(YakaTokenManager.identLu,token);
-                 expr.affichePile(token);
+                                case Ident.VAR:
+                                case Ident.PARAM:
+                                        yvm.iload(i.getValeur());
+                                break;
+                                case Ident.FONC:
+                                        fonc.empilerFonction(YakaTokenManager.identLu);
+                                break;
+
+                        }
+                         expr.empilerIdent(YakaTokenManager.identLu,token);
+                 }
+                 else
+                 {
+                        expr.empilerType(ERROR);
+                 }
       switch ((jj_ntk==-1)?jj_ntk():jj_ntk) {
       case 40:
         argumentsFonction();
@@ -569,13 +581,11 @@ public class Yaka implements Constantes, YakaConstants {
       jj_consume_token(TRUE);
  expr.empilerBool(VRAI);
  yvm.iconst(VRAI);
-                 expr.affichePile(token);
       break;
     case FALSE:
       jj_consume_token(FALSE);
  expr.empilerBool(FAUX);
  yvm.iconst(FAUX);
-                 expr.affichePile(token);
       break;
     default:
       jj_la1[21] = jj_gen;
