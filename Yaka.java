@@ -5,7 +5,7 @@ public class Yaka implements Constantes, YakaConstants {
     public static TabIdent tabIdent;
     public static Expression expr;
     public static Fonctions fonc;
-    public static YVMasm yvm;
+    public static YVM yvm;
     public static String nomVarTemp="";
 
   public static void main(String args[]) {
@@ -33,7 +33,7 @@ public class Yaka implements Constantes, YakaConstants {
       expr = new Expression(tabIdent);
       fonc = new Fonctions(tabIdent,expr);
       analyseur = new Yaka(input);
-      yvm = new YVMasm(args[args.length-1]);
+      yvm = new YVM(args[args.length-1]);
       analyseur.analyse();
       System.out.println("analyse syntaxique reussie!");
     } catch (ParseException e) {
@@ -64,7 +64,7 @@ public class Yaka implements Constantes, YakaConstants {
       declFonction();
     }
     jj_consume_token(PRINCIPAL);
-    fonc.ajouteFonction("principale");
+    yvm.nomFonc("main");fonc.ajouteFonction("principale");
     bloc();
     jj_consume_token(FPRINCIPAL);
                 tabIdent.videLocaux();
@@ -97,7 +97,7 @@ public class Yaka implements Constantes, YakaConstants {
       }
       declVar();
     }
-               yvm.ouvrePrinc(tabIdent.nombreVariable()*2);
+               yvm.ouvreBloc(tabIdent.nombreVariable()*2);
     suiteInstr();
   }
 
@@ -108,10 +108,10 @@ public class Yaka implements Constantes, YakaConstants {
                                    fonc.ajouteFonction(YakaTokenManager.identLu);
         yvm.nomFonc(YakaTokenManager.identLu);
     paramForms();
-         yvm.ouvreBloc(tabIdent.nombreVariable()*2);
+         fonc.calculerOffsetParam();
     bloc();
     jj_consume_token(FFONCTION);
-                     fonc.calculerOffsetParam();
+        yvm.fermeBloc(fonc.getTailleParam());
         tabIdent.videLocaux();
         fonc.depilerFonction();
         expr.clear();
@@ -309,7 +309,7 @@ public class Yaka implements Constantes, YakaConstants {
   static final public void retourne() throws ParseException {
     jj_consume_token(RETOURNE);
     expression();
-                                 fonc.testValeurRetour(token);
+                                 yvm.ireturn(fonc.getTailleParam()+4);fonc.testValeurRetour(token);
   }
 
 /*
@@ -545,6 +545,7 @@ public class Yaka implements Constantes, YakaConstants {
     case ident:
       jj_consume_token(ident);
                  Ident i = tabIdent.chercheIdent(YakaTokenManager.identLu);
+<<<<<<< HEAD
                  if (i!=null)
                  {
                         switch(i.getVarOrConst())
@@ -568,6 +569,18 @@ public class Yaka implements Constantes, YakaConstants {
                  {
                         expr.empilerType(ERROR);
                  }
+=======
+                 if (i.getVarOrConst() == Ident.CONST) {
+                        yvm.iconst(i.getValeur());
+                 } else if (i.getVarOrConst() == Ident.VAR || i.getVarOrConst() == Ident.PARAM) {
+                        yvm.iload(i.getValeur());
+                 }else if (i.getVarOrConst() == Ident.FONC) {
+                        fonc.empilerFonction(YakaTokenManager.identLu);
+                        yvm.reserveRetour();
+                 }
+
+                 expr.empilerIdent(YakaTokenManager.identLu,token);
+>>>>>>> 79da7118fa7cd288dc516ceea26621c3150a3e3f
       switch ((jj_ntk==-1)?jj_ntk():jj_ntk) {
       case 40:
         argumentsFonction();
@@ -627,7 +640,7 @@ public class Yaka implements Constantes, YakaConstants {
       ;
     }
     jj_consume_token(42);
-         fonc.testTypesArguments(cmp,token);fonc.depilerFonction();
+         fonc.testTypesArguments(cmp,token);yvm.call(fonc.getNomFoncActuel());fonc.depilerFonction();
   }
 
   static final public void opRel() throws ParseException {

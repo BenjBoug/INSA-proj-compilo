@@ -59,18 +59,17 @@ public class Fonctions {
 		fonctions.push(tabIdent.chercheFonction(nom));
 	}
 	
-	public void ajoutParam(String param)
-	{
-		rangParam++;
+	public void ajoutParam(String param) {
 		IdParam idPar = new IdParam(typeRetour,param,rangParam);
 		fonctions.peek().ajoutParam(idPar);
 		tabIdent.rangeIdent(param, idPar);
+		rangParam++;
 	}
 	
 	// Une fois que tous les rans ont été renseignés, on calcule leur offset
 	// (voir page 23 pour les détails)
 	public void calculerOffsetParam() {
-		int tailleParametres = tabIdent.nombreParametresFonction(getNomFoncActuel());
+		int tailleParametres =  getTailleParam();
 		tabIdent.calculerOffsetParam(tailleParametres);
 	}
 	
@@ -78,6 +77,11 @@ public class Fonctions {
 		return fonctions.peek().getNom();
 	}
 	
+
+	public int getTailleParam() {
+		return tabIdent.nombreParametresFonction(getNomFoncActuel()) * 2;
+	}
+
 	public void testTypesArguments(int nbArg, Token tok)
 	{
 		IdFonc fonc = fonctions.peek();
@@ -101,7 +105,6 @@ public class Fonctions {
 		}
 	}
 }
-
 
 
 

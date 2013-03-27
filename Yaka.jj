@@ -23,7 +23,7 @@ public class Yaka implements Constantes {
     public static TabIdent tabIdent;
     public static Expression expr;
     public static Fonctions fonc;
-    public static YVMasm yvm;
+    public static YVM yvm;
     public static String nomVarTemp="";
 
   public static void main(String args[]) { 
@@ -51,7 +51,7 @@ public class Yaka implements Constantes {
       expr = new Expression(tabIdent);
       fonc = new Fonctions(tabIdent,expr);
       analyseur = new Yaka(input);
-      yvm = new YVMasm(args[args.length-1]);
+      yvm = new YVM(args[args.length-1]);
       analyseur.analyse();
       System.out.println("analyse syntaxique reussie!");
     } catch (ParseException e) {
@@ -151,7 +151,7 @@ void analyse() : {}
    <PROGRAMME> {yvm.entete();} <ident>
    (declFonction())*	
    <PRINCIPAL>
-   {fonc.ajouteFonction("principale");}
+   {yvm.nomFonc("main");fonc.ajouteFonction("principale");}
    bloc()
    <FPRINCIPAL>{tabIdent.videLocaux();}
    <FPROGRAMME>
@@ -161,7 +161,7 @@ void analyse() : {}
 
 void bloc() : {}{
  (declConst())*
- (declVar())* {yvm.ouvrePrinc(tabIdent.nombreVariable()*2);}		
+ (declVar())* {yvm.ouvreBloc(tabIdent.nombreVariable()*2);}		
    suiteInstr() 
 }
 
@@ -169,9 +169,10 @@ void declFonction() : {}
 {
 	type() <FONCTION> <ident> {fonc.ajouteFonction(YakaTokenManager.identLu); 
 	yvm.nomFonc(YakaTokenManager.identLu);} paramForms()
-	{yvm.ouvreBloc(tabIdent.nombreVariable()*2);}
+	{fonc.calculerOffsetParam();}
 	bloc()
-	<FFONCTION> {fonc.calculerOffsetParam();
+	< FFONCTION> {
+	yvm.fermeBloc(fonc.getTailleParam());
 	tabIdent.videLocaux();
 	fonc.depilerFonction();
 	expr.clear();}
@@ -261,7 +262,7 @@ void instruction() : {}{
 
 void retourne() : {}
 {
-	<RETOURNE> expression() {fonc.testValeurRetour(token);}
+	<RETOURNE> expression() {yvm.ireturn(fonc.getTailleParam()+4);fonc.testValeurRetour(token);}
 }
 
 /*
@@ -273,7 +274,8 @@ void affectation() : {}
 	 expr.controleAffectation(nomVarTemp,token);}}
 
 void lecture() : {}{	<LIRE> "(" <ident> ")"
-	{	  yvm.lireEnt(tabIdent.valeurIdent(YakaTokenManager.identLu));
+	{
+		System.out.println("ERREUR PAS DE TEST SI VAR EXISTE LECTURE"):	  yvm.lireEnt(tabIdent.valeurIdent(YakaTokenManager.identLu));
 	}
 }
 void ecriture()  : {}
@@ -361,6 +363,7 @@ void valeur () : {}
  | <ident> 
 	 {
 		 Ident i = tabIdent.chercheIdent(YakaTokenManager.identLu);
+<<<<<<< HEAD
 		 if (i!=null)
 		 {
 		 	switch(i.getVarOrConst())
@@ -384,6 +387,18 @@ void valeur () : {}
 		 {
 		 	expr.empilerType(ERROR);
 		 }
+=======
+		 if (i.getVarOrConst() == Ident.CONST) {
+		 	yvm.iconst(i.getValeur());
+		 } else if (i.getVarOrConst() == Ident.VAR || i.getVarOrConst() == Ident.PARAM) {
+		 	yvm.iload(i.getValeur());
+		 }else if (i.getVarOrConst() == Ident.FONC) {
+		 	fonc.empilerFonction(YakaTokenManager.identLu);
+		 	yvm.reserveRetour();
+		 }
+		 
+		 expr.empilerIdent(YakaTokenManager.identLu,token);
+>>>>>>> 79da7118fa7cd288dc516ceea26621c3150a3e3f
 		 
 	 } 	
  	(argumentsFonction())?
@@ -401,7 +416,8 @@ void valeur () : {}
 void argumentsFonction() : {int cmp=0;}
 {
 	"(" (expression() {cmp++;} ("," expression(){cmp++;})*)? ")"
-	{fonc.testTypesArguments(cmp,token);fonc.depilerFonction(); }
+	{fonc.testTypesArguments(cmp,token);yvm.call(fonc.getNomFoncActuel());fonc.depilerFonction(); 
+	}
 }
 
 void opRel() : {}
