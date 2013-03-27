@@ -21,7 +21,7 @@ public class IdVar extends Ident {
 		this.offset = offset;
 	}
 
-	public int getVarOrConst() {
+	public int getForme() {
 		return VAR;
 	}
 	

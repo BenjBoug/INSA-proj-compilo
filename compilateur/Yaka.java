@@ -550,7 +550,7 @@ public class Yaka implements Constantes, YakaConstants {
 
                  if (i!=null)
                  {
-                        switch(i.getVarOrConst())
+                        switch(i.getForme())
                         {
                                 case Ident.CONST:
                                         yvm.iconst(i.getValeur());

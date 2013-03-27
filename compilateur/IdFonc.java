@@ -49,7 +49,7 @@ public class IdFonc extends Ident {
 
 
 	@Override
-	public int getVarOrConst() {
+	public int getForme() {
 		return FONC;
 	}
 

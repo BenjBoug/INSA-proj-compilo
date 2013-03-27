@@ -21,7 +21,7 @@ public class IdParam extends Ident  {
 	}
 
 	@Override
-	public int getVarOrConst() {
+	public int getForme() {
 		return PARAM;
 	}
 

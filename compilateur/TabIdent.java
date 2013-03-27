@@ -74,7 +74,7 @@ public class TabIdent {
 		
 		Iterator<Ident> i = locaux.values().iterator();
 		while (i.hasNext()) {
-			if(i.next().getVarOrConst() == Ident.VAR) {
+			if(i.next().getForme() == Ident.VAR) {
 				compteur++;
 			}
 		}

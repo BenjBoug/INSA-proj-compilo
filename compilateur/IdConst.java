@@ -16,7 +16,7 @@ public class IdConst extends Ident {
 		this.valeur = valeur;
 	}
 
-	public int getVarOrConst() {
+	public int getForme() {
 		return CONST;
 	}
 	

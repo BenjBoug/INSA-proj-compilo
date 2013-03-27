@@ -6,7 +6,7 @@ import org.junit.Test;
 
 import compilateur.*;
 
-public class testFonction {
+public class FonctionsTest {
 	
 	Fonctions fonctions;
 	TabIdent tabIdent;

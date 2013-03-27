@@ -5,29 +5,29 @@ import static org.junit.Assert.*;
 import org.junit.Before;
 import org.junit.Test;
 
-public class testExpression {
+public class DeclarationTest {
 
 	@Before
 	public void setUp() throws Exception {
 	}
 
 	@Test
-	public void testControleAffectation() {
+	public void testAjoutConstEntier() {
 		fail("Not yet implemented");
 	}
 
 	@Test
-	public void testOperation() {
+	public void testAjoutConstIdent() {
 		fail("Not yet implemented");
 	}
 
 	@Test
-	public void testTestExprBool() {
+	public void testAjoutConstBool() {
 		fail("Not yet implemented");
 	}
 
 	@Test
-	public void testTestExpr() {
+	public void testAjoutVariable() {
 		fail("Not yet implemented");
 	}
 

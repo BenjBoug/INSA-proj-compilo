@@ -38,7 +38,7 @@ public abstract class Ident implements Constantes {
 	
 	public abstract void setValeur(int valeur);
 
-	public abstract int getVarOrConst();
+	public abstract int getForme();
 	
 	public abstract void setOffset(int o);
 	
