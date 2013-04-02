@@ -86,6 +86,8 @@ public class TabIdent {
 		if (!existeIdent(nom)) {
 			return 0;
 		}
+		System.out.println(chercheIdent(nom).getForme());
+		
 		
 		return chercheIdent(nom).getValeur();
 	}

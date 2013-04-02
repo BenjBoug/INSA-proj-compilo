@@ -231,4 +231,6 @@ public class YVM implements Constantes {
 		}
 	}
 
+	public void debut() {
+	}
 }
