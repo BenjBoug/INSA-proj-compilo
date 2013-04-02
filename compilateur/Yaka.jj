@@ -265,7 +265,13 @@ void affectation() : {}
 	 expr.controleAffectation(nomVarTemp,token);}}
 
 void lecture() : {}{	<LIRE> "(" <ident> ")"
-	{	  yvm.lireEnt(tabIdent.chercheIdent(YakaTokenManager.identLu).getValeur());
+	{
+	  try	  {
+	  	yvm.lireEnt(tabIdent.chercheIdent(YakaTokenManager.identLu).getValeur());
+	  }
+	  catch (Exception e)
+	  {		System.out.println("Erreur (l."+token.beginLine+"): la variable "+YakaTokenManager.identLu+" n'est pas declaree.");
+	  }
 
 	}
 }
@@ -288,7 +294,6 @@ void suiteBoucle() : {}
 /*
  * conditionnelle
  */
-/*\ ATTENTION: conditionnelle a redéfinir, probleme  avec les étiquettes de iffaux quand il y a un bloc sinon   */
 void condition() : {}
 {
 	< SI > {yvm.si();} expression(){expr.testExprBool(token);} < ALORS >  {yvm.iffaux();} suiteInstr() {yvm.sinon();} suiteCondi()  }
@@ -353,6 +358,7 @@ void valeur () : {}
   } 		
  | <ident> 
 	 {
+	   	
 		 Ident i = tabIdent.chercheIdent(YakaTokenManager.identLu);
 
 		 if (i!=null)
@@ -378,6 +384,7 @@ void valeur () : {}
 		 else
 		 {
 		 	expr.empilerType(ERROR);
+		 	System.out.println("Erreur (l."+token.beginLine+"): l'identifiant "+YakaTokenManager.identLu+" n'est pas declare.");
 		 }
 		 
 	 } 	
