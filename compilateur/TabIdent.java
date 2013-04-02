@@ -81,7 +81,6 @@ public class TabIdent {
 		
 		return compteur;
 	}
-	
 	public void videLocaux()
 	{
 		locaux.clear();

@@ -14,8 +14,6 @@ public class YVMasm extends YVM {
 		Ecriture.ecrireStringln(o,".586");
 		Ecriture.ecrireStringln(o,"");
 		Ecriture.ecrireStringln(o,".CODE");
-		Ecriture.ecrireStringln(o,"debut :");
-		Ecriture.ecrireStringln(o,"STARTUPCODE");
 	}
 
 	public void iadd() {
@@ -246,7 +244,9 @@ public class YVMasm extends YVM {
 	public void lireEnt(int offset) {
 		Ecriture.ecrireString(o,"; ");
 		super.lireEnt(offset);
-		Ecriture.ecrireStringln(o,"lea dx,[bp"+offset+"]");
+		String signe = "";
+		if (offset>=0) signe = "+";
+		Ecriture.ecrireStringln(o,"lea dx,[bp"+signe+offset+"]");
 		Ecriture.ecrireStringln(o,"push dx");
 		Ecriture.ecrireStringln(o,"call lirent");
 	}
@@ -308,7 +308,7 @@ public class YVMasm extends YVM {
 	
 	public void call(String nom) {
 		Ecriture.ecrireString(o,"; ");
-		super.reserveRetour();
+		super.call(nom);
 		Ecriture.ecrireStringln(o, "call " +nom);
 	}
 	
@@ -316,6 +316,11 @@ public class YVMasm extends YVM {
 		Ecriture.ecrireString(o,"; ");
 		super.nomFonc(nom);
 		Ecriture.ecrireStringln(o, nom+":");
+	}
+	
+	public void debut() {
+		Ecriture.ecrireStringln(o,"debut :");
+		Ecriture.ecrireStringln(o,"STARTUPCODE");	
 	}
 
 }
