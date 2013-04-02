@@ -1,13 +1,3 @@
-/*
- *
- *       Auteur: Pedrono Marie-Jo
- *
- * 	creation : 13 fevrier 2002
- *
- *     nature : projet etudiant
- *
- */
-
 
 options{
 	JDK_VERSION="1.5";	
@@ -151,7 +141,7 @@ void analyse() : {}
    <PROGRAMME> {yvm.entete();} <ident>
    (declFonction())*	
    <PRINCIPAL>
-   {yvm.nomFonc("main");fonc.ajouteFonction("principale");}
+   {yvm.debut();yvm.nomFonc("main");fonc.ajouteFonction("principale");}
    bloc()
    <FPRINCIPAL>{tabIdent.videLocaux();}
    <FPROGRAMME>
@@ -270,11 +260,13 @@ void retourne() : {}
  */
 void affectation() : {}
 {	 <ident>	 { nomVarTemp = YakaTokenManager.identLu;}	   "=" expression()
+
 	 {yvm.istore(tabIdent.chercheIdent(nomVarTemp).getValeur());
 	 expr.controleAffectation(nomVarTemp,token);}}
 
 void lecture() : {}{	<LIRE> "(" <ident> ")"
 	{	  yvm.lireEnt(tabIdent.chercheIdent(YakaTokenManager.identLu).getValeur());
+
 	}
 }
 void ecriture()  : {}
