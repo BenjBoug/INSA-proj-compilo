@@ -15,7 +15,7 @@ options{
 
 PARSER_BEGIN(Yaka)
 
-
+package compilateur;
 
 public class Yaka implements Constantes {
 
@@ -51,7 +51,7 @@ public class Yaka implements Constantes {
       expr = new Expression(tabIdent);
       fonc = new Fonctions(tabIdent,expr);
       analyseur = new Yaka(input);
-      yvm = new YVM(args[args.length-1]);
+      yvm = new YVMasm(args[args.length-1]);
       analyseur.analyse();
       System.out.println("analyse syntaxique reussie!");
     } catch (ParseException e) {
@@ -270,12 +270,11 @@ void retourne() : {}
  */
 void affectation() : {}
 {	 <ident>	 { nomVarTemp = YakaTokenManager.identLu;}	   "=" expression()
-	 {yvm.istore(tabIdent.valeurIdent(nomVarTemp));
+	 {yvm.istore(tabIdent.chercheIdent(nomVarTemp).getValeur());
 	 expr.controleAffectation(nomVarTemp,token);}}
 
 void lecture() : {}{	<LIRE> "(" <ident> ")"
-	{
-	 System.out.println("ERREUR PAS DE TEST SI VAR EXISTE LECTURE");	  yvm.lireEnt(tabIdent.valeurIdent(YakaTokenManager.identLu));
+	{	  yvm.lireEnt(tabIdent.chercheIdent(YakaTokenManager.identLu).getValeur());
 	}
 }
 void ecriture()  : {}
@@ -366,7 +365,7 @@ void valeur () : {}
 
 		 if (i!=null)
 		 {
-		 	switch(i.getVarOrConst())
+		 	switch(i.getForme())
 		 	{
 		 		case Ident.CONST:
 			 		yvm.iconst(i.getValeur());		 		
@@ -378,6 +377,7 @@ void valeur () : {}
 		 		break;
 		 		case Ident.FONC:
 			 		fonc.empilerFonction(YakaTokenManager.identLu);
+			 		yvm.reserveRetour();
 		 		break;
 		 	
 		 	}		 

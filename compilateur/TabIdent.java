@@ -82,15 +82,6 @@ public class TabIdent {
 		return compteur;
 	}
 	
-	public int valeurIdent(String nom) {
-		if (!existeIdent(nom)) {
-			return 0;
-		}
-		
-		return chercheIdent(nom).getValeur();
-	}
-		
-	
 	public void videLocaux()
 	{
 		locaux.clear();
