@@ -69,6 +69,22 @@ public class TabIdent {
 		}
 	}
 	
+	public int getValeurIdent(String nomIdent, Token tok)
+	{
+		Ident i = chercheIdent(nomIdent);
+		int val = 0;
+		try
+		{
+			val = i.getValeur();
+		}
+		catch (Exception e)
+		{
+			System.out.println("Erreur (l."+tok.beginLine+"): l'identifiant "+nomIdent+" n'est pas déclaré.");
+		}
+		
+		return val;
+	}
+	
 	public int nombreVariable() {
 		int compteur = 0;
 		

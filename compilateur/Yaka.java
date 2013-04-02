@@ -188,7 +188,7 @@ public class Yaka implements Constantes, YakaConstants {
     case ident:
       jj_consume_token(ident);
  decl.ajoutConstIdent(id,YakaTokenManager.identLu,token);
- yvm.iconst(tabIdent.chercheIdent(id).getValeur());
+ yvm.iconst(tabIdent.getValeurIdent(id,token));
       break;
     case TRUE:
       jj_consume_token(TRUE);
@@ -322,8 +322,8 @@ public class Yaka implements Constantes, YakaConstants {
            nomVarTemp = YakaTokenManager.identLu;
     jj_consume_token(44);
     expression();
-          yvm.istore(tabIdent.chercheIdent(nomVarTemp).getValeur());
-         expr.controleAffectation(nomVarTemp,token);
+            yvm.istore(tabIdent.getValeurIdent(nomVarTemp,token));
+                expr.controleAffectation(nomVarTemp,token);
   }
 
   static final public void lecture() throws ParseException {
@@ -331,7 +331,7 @@ public class Yaka implements Constantes, YakaConstants {
     jj_consume_token(40);
     jj_consume_token(ident);
     jj_consume_token(42);
-          yvm.lireEnt(tabIdent.chercheIdent(YakaTokenManager.identLu).getValeur());
+          yvm.lireEnt(tabIdent.getValeurIdent(YakaTokenManager.identLu,token));
   }
 
   static final public void ecriture() throws ParseException {
@@ -394,7 +394,6 @@ public class Yaka implements Constantes, YakaConstants {
 /*
  * conditionnelle
  */
-/*\ ATTENTION: conditionnelle a redéfinir, probleme  avec les étiquettes de iffaux quand il y a un bloc sinon   */
   static final public void condition() throws ParseException {
     jj_consume_token(SI);
                 yvm.si();
@@ -571,6 +570,7 @@ public class Yaka implements Constantes, YakaConstants {
                  else
                  {
                         expr.empilerType(ERROR);
+                        System.out.println("Erreur (l."+token.beginLine+"): l'identifiant "+YakaTokenManager.identLu+" n'est pas declare.");
                  }
       switch ((jj_ntk==-1)?jj_ntk():jj_ntk) {
       case 40:

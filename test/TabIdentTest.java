@@ -5,15 +5,25 @@ import static org.junit.Assert.*;
 import org.junit.Before;
 import org.junit.Test;
 
+import compilateur.IdVar;
+import compilateur.Ident;
+import compilateur.TabIdent;
+
 public class TabIdentTest {
+	
+	TabIdent tabIdent;
 
 	@Before
 	public void setUp() throws Exception {
+		
+		tabIdent = new TabIdent();
 	}
 
 	@Test
 	public void testChercheIdent() {
-		fail("Not yet implemented");
+		Ident id1 = new IdVar(IdVar.ENTIER,"test",50);
+		tabIdent.rangeIdent("test", id1);
+		assertEquals(id1, tabIdent.chercheIdent("test"));
 	}
 
 	@Test

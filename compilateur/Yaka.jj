@@ -207,7 +207,7 @@ void valConst() : {String id = YakaTokenManager.identLu;}
   } 		
  | <ident> {
  decl.ajoutConstIdent(id,YakaTokenManager.identLu,token);
- yvm.iconst(tabIdent.chercheIdent(id).getValeur());
+ yvm.iconst(tabIdent.getValeurIdent(id,token));
  } 		
  | <TRUE> {
  decl.ajoutConstBool(id,VRAI,token);
@@ -261,18 +261,14 @@ void retourne() : {}
 void affectation() : {}
 {	 <ident>	 { nomVarTemp = YakaTokenManager.identLu;}	   "=" expression()
 
-	 {yvm.istore(tabIdent.chercheIdent(nomVarTemp).getValeur());
-	 expr.controleAffectation(nomVarTemp,token);}}
+	 {    
+	    yvm.istore(tabIdent.getValeurIdent(nomVarTemp,token));
+	 	expr.controleAffectation(nomVarTemp,token);
+	 }}
 
 void lecture() : {}{	<LIRE> "(" <ident> ")"
 	{
-	  try	  {
-	  	yvm.lireEnt(tabIdent.chercheIdent(YakaTokenManager.identLu).getValeur());
-	  }
-	  catch (Exception e)
-	  {		System.out.println("Erreur (l."+token.beginLine+"): la variable "+YakaTokenManager.identLu+" n'est pas declaree.");
-	  }
-
+	  yvm.lireEnt(tabIdent.getValeurIdent(YakaTokenManager.identLu,token));
 	}
 }
 void ecriture()  : {}
